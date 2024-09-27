@@ -1,9 +1,16 @@
 ﻿@page "/"
+@using RealWorldApp.Shared.Models
 
 <PageTitle>Index</PageTitle>
 
 <h1>Hello, world!</h1>
 
-Welcome to your new app.
+<p>@user.Id</p>
+<p>@user.Username</p>
+<p>@user.Email</p>
 
 <SurveyPrompt Title="How is Blazor working for you?" />
+@code{
+    private User user = new User();
+
+}

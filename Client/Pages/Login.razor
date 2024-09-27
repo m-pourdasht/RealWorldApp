@@ -1,0 +1,36 @@
+﻿@page "/login"
+@inject HttpClient Http
+@using RealWorldApp.Shared.Models
+
+
+
+<h3>Login</h3>
+
+<EditForm Model="loginModel" OnValidSubmit="LoginUser">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div>
+        <label>Username:</label>
+        <InputText @bind-Value="loginModel.Username" />
+    </div>
+    <div>
+        <label>Password:</label>
+        <InputText @bind-Value="loginModel.Password" type="password" />
+    </div>
+
+    <button type="submit">Login</button>
+</EditForm>
+
+@code {
+    private LoginModel loginModel = new LoginModel();
+
+    private async Task LoginUser()
+    {
+        var response = await Http.PostAsJsonAsync("api/auth/login", loginModel);
+        if (response.IsSuccessStatusCode)
+        {
+            // Handle successful login (e.g., navigate to dashboard or set token)
+        }
+    }
+}

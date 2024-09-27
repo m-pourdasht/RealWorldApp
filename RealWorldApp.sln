@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34902.65
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealWorldApp.Server", "Server\RealWorldApp.Server.csproj", "{03034EC0-B951-4939-B789-ED6C42189F18}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RealWorldApp.Server", "Server\RealWorldApp.Server.csproj", "{03034EC0-B951-4939-B789-ED6C42189F18}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealWorldApp.Client", "Client\RealWorldApp.Client.csproj", "{92D4730C-B7A8-4375-960C-C0D2BC61B3EB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RealWorldApp.Client", "Client\RealWorldApp.Client.csproj", "{92D4730C-B7A8-4375-960C-C0D2BC61B3EB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealWorldApp.Shared", "Shared\RealWorldApp.Shared.csproj", "{30307833-7706-4EA5-8C74-04DB83EE461F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RealWorldApp.Shared", "Shared\RealWorldApp.Shared.csproj", "{30307833-7706-4EA5-8C74-04DB83EE461F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

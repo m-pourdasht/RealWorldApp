@@ -7,7 +7,7 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Add services to the container
 
 // Add DbContext with SQL Server connection string
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -39,7 +39,7 @@ builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())
 {
     app.UseWebAssemblyDebugging();
@@ -56,12 +56,15 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-// Add Authentication and Authorization Middleware
-app.UseAuthentication(); // Ensure this is added before UseAuthorization
-app.UseAuthorization();
+// Authentication must come before Authorization
+app.UseAuthentication(); // JWT Authentication
+app.UseAuthorization();  // Authorization for controllers and pages
 
+// Map Razor pages and controllers
 app.MapRazorPages();
 app.MapControllers();
+
+// Fallback to the Blazor client-side app for unknown routes
 app.MapFallbackToFile("index.html");
 
 app.Run();

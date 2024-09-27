@@ -1,0 +1,125 @@
+﻿@use 'sass:math';
+
+@mixin border($color: #808080) {
+    border-color: $color;
+}
+// Generate border classes for theme-text-colors
+@each $width-name, $width-value in $border-width-map {
+    @if $width-value != 0 {
+        .border-#{$width-name} {
+            border-width: $width-value;
+            border-style: solid; // Default to solid
+            @include border();
+            //border-color: #808080; // Default to gray
+        }
+    }
+
+    @each $color-name, $color-value in $theme-colors {
+        @if $width-value != 0 {
+            .border-color-#{$color-name} {
+                @include border($color-value);
+                //border-color: $color-value;
+            }
+        }
+    }
+
+    @each $light-color-name, $light-color-value in $theme-light-colors {
+        @if $width-value != 0 {
+            .border-color-light-#{$light-color-name} {
+                @include border($light-color-value);
+                border-color: $light-color-value;
+            }
+        }
+    }
+    // Border style classes
+    @each $width-name, $width-value in $border-width-map {
+        @each $style-name, $style-value in $border-style {
+            @if $width-value != 0 {
+                .border-style-#{$style-name} {
+                    border-style: $style-value;
+                }
+            }
+        }
+    }
+}
+
+//sapacing //padding & margin
+@each $abbr, $name in ("": "", "t": "top", "r": "right", "b": "bottom", "l": "left") {
+    @each $padding-name, $padding-value in $spacers {
+        .p#{$abbr}-#{$padding-name} {
+            @if $abbr == "" {
+                padding: $padding-value;
+            }
+            @else {
+                padding-#{$name}: $padding-value;
+            }
+        }
+    }
+
+    @each $margin-name, $margin-value in $spacers {
+        .m#{$abbr}-#{$margin-name} {
+            @if $abbr == "" {
+                margin: $margin-value;
+            }
+            @else {
+                margin-#{$name}: $margin-value;
+            }
+        }
+    }
+}
+
+//sapacing //padding & margin
+$axis: x, y;
+@each $value in $axis {
+    @each $p-name, $p-value in $spacers {
+        @if $value == x {
+            .p#{$value}-#{$p-name} {
+                padding-left: $p-value;
+                padding-right: $p-value;
+            }
+
+            .m#{$value}-#{$p-name} {
+                margin-left: $p-value;
+                margin-right: $p-value;
+            }
+        } 
+        @else{
+            .p#{$value}-#{$p-name} {
+                padding-top: $p-value;
+                padding-bottom: $p-value;
+            }
+
+            .m#{$value}-#{$p-name} {
+                margin-top: $p-value;
+                margin-bottom: $p-value;
+            }
+        }
+        
+    }
+}
+
+
+@debug $theme-text-colors;
+//bg colors 
+@each $key, $val in $theme-text-colors {
+   .text-#{$key} {
+        color: $val;
+    }
+    .text-hover-#{$key} {
+        &:hover {
+            color: mix($white,$val,5%);
+        }
+    }
+
+    .bg-#{$key} {
+        background-color: $val !important;
+    }
+}
+
+@each $key, $val in $theme-light-colors {
+    .bg-light-#{$key} {
+        background-color: $val;
+    }
+}
+
+

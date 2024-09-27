@@ -1,0 +1,26 @@
+﻿@each $color-name, $color-value in $theme-colors {
+    .text-#{$color-name} {
+        color: $color-value;
+    }
+
+    .text-hover-#{$color-name}:hover {
+        color: lighten($color-value, 10%) !important;
+        transition: all 0.2s ease-in-out;
+    }
+}
+
+@each $color-name, $color-value in $theme-light-colors {
+    @if str-index($color-name, "gray") == null {
+        .text-light-#{$color-name} {
+            color: $color-value;
+        }
+    }
+}
+
+@each $color-name, $color-value in $theme-colors {
+    @if not (str-index($color-name, "gray") or str-index($color-name, "light") or str-index($color-name, "dark") or str-index($color-name, "white") or str-index($color-name, "mute")) {
+        .link-#{$color-name} {
+            color: $color-value;
+        }
+    }
+}

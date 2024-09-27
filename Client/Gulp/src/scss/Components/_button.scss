@@ -1,0 +1,101 @@
+@mixin btn($bg-color) {
+    text-decoration: none;
+    cursor: pointer;
+    display: inline-block;
+    border: 1;
+    border-color: $bg-color;
+    font-size: $base-font-size;
+    padding: $base-padding $base-padding * 3;
+    border-radius: $base-border-radius;
+    background-color: $bg-color;
+    transition: all 0.2s ease-in-out;
+    // Set text color based on background color
+    //color: if($bg-color == $info, $white, lighten($bg-color, 80));
+
+    &:focus, &:active {
+        outline: none; // Remove default outline
+        box-shadow: none !important; // Example focus effect
+    }
+}
+
+// Define mixin for small buttons
+@mixin btn-sm {
+    padding: 0.5rem 1rem !important;
+    font-size: 0.875rem !important;
+}
+
+// Default button style
+.btn {
+    @include btn(#e2e2e2);
+}
+
+// Small button style
+.btn-sm {
+    @include btn-sm; // Include styles for smaller buttons
+}
+
+// Button styles for theme colors
+//$btncolors: map-merge($theme-btn-colors, $theme-btn-light-colors);
+//@debug $btncolors;
+
+@each $key, $val in $theme-text-colors {
+    .btn-#{$key} {
+        background-color: $val;
+
+        @if $val == $info {
+            &:hover {
+                //color: $white;
+                background-color: darken($val, 5);
+                border-color: darken($val, 5);
+            }
+        }
+        @else {
+            &:hover {
+                background-color: darken($val, 5);
+                border-color: darken($val, 5);
+            }
+        }
+    }
+    // Outlined button styles for theme colors
+    .btn-outline-#{$key} {
+        background-color: $card-cap-bg;
+        border-color: $val;
+
+        &:hover {
+            background-color: $val;;
+        }
+    }
+    
+}
+@each $key, $val in $theme-colors {
+    .btn-outline-#{$key} {
+        background-color: $card-cap-bg;
+        color: $val;
+        border-color: $val;
+
+        &:hover {
+            background-color: $val;
+            border-color: $val;
+        }
+    }
+}
+@each $key, $val in $theme-light-colors {
+    .btn-light-#{$key} {
+        background-color: $val;
+        border-color: $val;
+
+        @if $val == $info {
+            &:hover {
+                //color: $white;
+                background-color: darken($val, 5);
+                border-color: darken($val, 5);
+            }
+        }
+        @else {
+            &:hover {
+                background-color: darken($val, 5);
+                border-color: darken($val, 5);
+            }
+        }
+    }
+}

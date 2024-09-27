@@ -1,0 +1,1 @@
+function OpenBootstrapModal(o){new bootstrap.Modal(document.getElementById(o)).show()}window.getLocation=()=>new Promise(t=>{navigator.geolocation.getCurrentPosition(o=>{t(`Latitude: ${o.coords.latitude}, Longitude: `+o.coords.longitude)})});

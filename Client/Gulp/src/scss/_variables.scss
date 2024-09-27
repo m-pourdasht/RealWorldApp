@@ -1,0 +1,415 @@
+
+// Bootstrap color system
+$white: #ffffff !default;
+$black:#000000 !default;
+
+// Bootstrap grey colors
+$gray-100: #f5f8fa !default;
+$gray-200: #eff2f5 !default;
+$gray-300: #E4E6EF !default;
+$gray-400: #B5B5C3 !default;
+$gray-500: #A1A5B7 !default;
+$gray-600: #7E8299 !default;
+$gray-700: #5E6278 !default;
+$gray-800: #3F4254 !default;
+$gray-900: #181C32 !default;
+
+$gray-100-dark:  #1b1b29 !default;
+$gray-200-dark:  #2B2B40 !default;
+$gray-300-dark:  #323248 !default;
+$gray-400-dark:  #474761 !default;
+$gray-500-dark:  #565674 !default;
+$gray-600-dark:  #6D6D80 !default;
+$gray-700-dark:  #92929F !default;
+$gray-800-dark:  #CDCDDE !default;
+$gray-900-dark:  #FFFFFF !default;
+
+// Bootstrap muted color
+$text-muted: $gray-500 !default;
+$text-muted-dark: $gray-500-dark !default;
+
+// Bootstrap gray colors map
+$grays: (
+	"100": $gray-100,
+	"200": $gray-200,
+	"300": $gray-300,
+	"400": $gray-400,
+	"500": $gray-500,
+	"600": $gray-600,
+	"700": $gray-700,
+	"800": $gray-800,
+	"900": $gray-900
+) !default; 
+
+
+// Bootstrap contextual colors
+// Primary colors
+$primary:						#3699bb !default;
+$secondary:						$gray-300 !default;
+$light:							$gray-100 !default;
+$success:						#1BC5BD !default;
+$info:							#8950FC !default;
+$danger:						#F64E60 !default; 
+$warning:						#FFA800 !default;
+$dark:							$gray-900 !default;
+
+$secondary-dark: 				$gray-300-dark !default;
+$light-dark:					$gray-200-dark !default;
+$dark-dark:						$gray-900-dark !default; 
+
+$primary-active:				#187DE4 !default;
+$secondary-active: 				$gray-400 !default;
+$light-active:					$gray-200 !default;
+$success-active:				#0BB7AF !default;
+$info-active:					#7337EE !default;
+$warning-active:				#EE9D01 !default;
+$danger-active:					#EE2D41 !default;
+$dark-active:					darken($gray-900, 3%) !default;
+
+$primary-light:					#F1FAFF !default;
+$secondary-light:				$gray-100 !default;
+$light-light:					gba($gray-100, 0.75) !default;
+$success-light:					#C9F7F5 !default;
+$info-light:					#EEE5FF !default;
+$warning-light:					#FFF4DE !default;
+$danger-light:					#FFE2E5 !default;
+$dark-light:					$gray-200 !default;
+
+$primary-light-dark:			#212E48 !default;
+$success-light-dark:			#1C3833 !default;
+$info-light-dark:				#2F264F !default;
+$warning-light-dark:			#392F28 !default;
+$danger-light-dark:				#3A2434 !default;
+$secondary-light-dark: 			$gray-100-dark !default;
+$dark-light-dark:				$gray-200-dark !default;
+
+$secondary-active-dark:			$gray-400-dark !default;
+$light-active-dark:				$gray-300-dark !default;
+$dark-active-dark:				lighten($gray-900-dark, 3%) !default;
+
+$light-inverse-dark:			$gray-600-dark !default;
+$secondary-inverse-dark:		$gray-800-dark !default;
+$dark-inverse-dark:				$gray-100-dark !default;
+
+$primary-inverse:				$white !default;
+$secondary-inverse:				$gray-800 !default;
+$light-inverse:					$gray-600 !default;
+$success-inverse:				$white !default;
+$info-inverse:					$white !default;
+$warning-inverse:				$white !default;
+$danger-inverse:				$white !default;
+$dark-inverse:					$white !default;
+
+// Body
+//
+// Settings for the `<body>` element.
+$body-bg: $white !default;
+$body-bg-rgb: to-rgb($body-bg) !default;
+$body-bg-dark: #1e1e2d !default;
+$body-bg-rgb-dark: to-rgb($body-bg-dark) !default;
+$body-color: $gray-900 !default;
+$body-color-dark: $gray-900-dark !default;
+$body-text-align: null !default;
+
+// Components
+//
+// Define common padding and border radius sizes and more.
+$border-width: 1px !default;
+$border-color: $gray-200 !default;
+$border-color-dark: $gray-200-dark !default;
+$border-dashed-color: $gray-300 !default;
+$border-dashed-color-dark: $gray-300-dark !default;
+
+// borders
+$base-border-thickness: 1px !default;
+$base-border-radius: 5px !default;
+
+// Border Radiues
+$border-radius: .475rem !default;
+$border-radius-sm: .425rem !default;
+$border-radius-lg: .625rem !default;
+$border-radius-xl: 1rem !default;
+$border-radius-2xl: 2rem !default;
+$border-radius-pill: 50rem !default;
+
+// Card
+$card-bg: $body-bg !default;
+$card-bg-dark: $body-bg-dark !default;
+$card-box-shadow: 0px 0px 20px 0px rgba(76,87,125,0.02) !default;
+$card-box-shadow-dark: none !default;
+$card-border-color: $border-color !default;
+$card-border-color-dark: $border-color-dark !default;
+$card-border-style: solid !default;
+$card-border-dashed-color: $border-dashed-color !default;
+$card-border-dashed-color-dark: $border-dashed-color-dark !default;
+$card-color: null !default;
+$card-color-dark: null !default;
+$card-cap-bg: transparent !default;
+$card-cap-bg-dark: transparent !default;
+$card-py: 2rem !default;
+$card-px: 2.25rem !default;
+$card-border-radius: $border-radius-lg !default;
+$card-header-py: 0.5rem !default;
+$card-header-height: 70px !default;
+$card-border-enabled: true !default;
+
+// Box shadow
+$box-shadow-xs: 0 .1rem 0.75rem 0.25rem rgba($black, 0.05) !default;
+$box-shadow-xs-dark: 0 .1rem 0.75rem 0.25rem rgba($black, 0.05) !default;
+$box-shadow-sm: 0 .1rem 1rem 0.25rem rgba($black, .05) !default;
+$box-shadow-sm-dark: 0 .1rem 1rem 0.25rem rgba($black, .05) !default;
+$box-shadow: 0 .5rem 1.5rem 0.5rem rgba($black, .075) !default;
+$box-shadow-dark: 0 .5rem 1.5rem 0.5rem rgba($black, .075) !default;
+$box-shadow-lg: 0 1rem 2rem 1rem rgba($black, .1) !default;
+$box-shadow-lg-dark: 0 1rem 2rem 1rem rgba($black, .1) !default;
+$box-shadow-inset: inset 0 1px 2px rgba($black, .075) !default;
+$box-shadow-inset-dark: inset 0 1px 2px rgba($black, .075) !default;
+
+// Contextual colors
+$theme-colors: (
+	"white": $white,  // custom color type
+	"light": $light,
+	"primary": $primary,
+	"secondary": $secondary,
+	"success": $success,
+	"info": $info,
+	"warning": $warning,
+	"danger": $danger,
+	"dark": $dark
+) !default;
+	
+// Contextual light state colors
+$theme-light-colors: (
+	"primary": $primary-light,
+	"secondary": $secondary-light,
+	"success": $success-light,
+	"info":    $info-light,
+	"warning": $warning-light,
+	"danger":  $danger-light,
+	"dark":    $dark-light
+) !default; 
+
+// Contextual light state colors
+$theme-inverse-colors: (
+	"primary": $primary-inverse,
+	"secondary": $secondary-inverse,
+	"success": $success-inverse,
+	"info":    $info-inverse,
+	"warning": $warning-inverse,
+	"danger":  $danger-inverse,
+	"dark":    $dark-inverse
+) !default; 
+
+// Text colors
+$theme-text-colors: (
+	"white":   $white,
+	"primary": $primary,
+	"secondary":  $secondary,
+	"light":   $light,
+	"success": $success,
+	"info":    $info,
+	"warning": $warning,
+	"danger":  $danger,
+	"dark":    $dark,
+	"muted":   $text-muted,
+	"gray-100":   $gray-100,
+	"gray-200":   $gray-200,
+	"gray-300":   $gray-300,
+	"gray-400":   $gray-400,
+	"gray-500":   $gray-500,
+	"gray-600":   $gray-600,
+	"gray-700":   $gray-700,
+	"gray-800":   $gray-800,
+	"gray-900":   $gray-900
+) !default; 
+
+// spacing
+$base-padding: 0.75rem !default;
+$base-margin: 0.75rem !default;
+$spacer: 0.75rem !default;
+
+// box-shadow
+$base-box-shadow: 1px 3px 5px rgba(0,0,0,0.1) !default;
+
+// Typography
+//
+// Font, line-height, and color for body text, headings, and more.
+// Font family
+$font-family-sans-serif: Inter, Helvetica, "sans-serif" !default;
+
+$base-font-size: 1rem !default; // Assumes the browser default, typically `13px`
+$font-size-lg: $base-font-size * 1.075 !default; // 14.04px
+$font-size-sm: $base-font-size * .925 !default; // 12.025px
+
+// Heading sizes
+$h1-font-size: $base-font-size * 1.75 !default; // 22.75px
+$h2-font-size: $base-font-size * 1.5 !default; // 19.50px
+$h3-font-size: $base-font-size * 1.35 !default; // 17.55px
+$h4-font-size: $base-font-size * 1.25 !default; // 16.25px
+$h5-font-size: $base-font-size * 1.15 !default; // 14.95px
+$h6-font-size: $base-font-size * 1.075 !default; // 13.97px
+
+
+
+//line height
+$line-height-base: 1.5 !default;
+$line-height-sm: 1.25 !default;
+
+//sizes
+$custom-sizes: (
+    "unset": unset,
+	"25": 25%,
+	"50": 50%,
+	"75": 75%,
+	"100": 100%,
+	"auto": auto,
+	"1px": 1px,
+	"2px": 2px,
+	"3px": 3px,
+	"4px": 4px,
+	"5px": 5px,
+	"6px": 6px,
+	"7px": 7px,
+	"8px": 8px,
+	"9px": 9px,
+	"10px": 10px,
+	"15px": 15px,
+	"20px": 20px,
+	"25px": 25px,
+	"30px": 30px,
+	"35px": 35px,
+	"40px": 40px,
+	"45px": 45px,
+	"50px": 50px,
+	"55px": 55px,
+	"60px": 60px,
+	"65px": 65px,
+	"70px": 70px,
+	"75px": 75px,
+	"80px": 80px,
+	"85px": 85px,
+	"90px": 90px,
+	"95px": 95px,
+	"100px": 100px,
+	"125px": 125px,
+	"150px": 150px,
+	"175px": 175px,
+	"200px": 200px,
+	"225px": 225px,
+	"250px": 250px,
+	"275px": 275px,
+	"300px": 300px,
+	"325px": 325px,
+	"350px": 350px,
+	"375px": 375px,
+	"400px": 400px,
+	"425px": 425px,
+	"450px": 450px,
+	"475px": 457px,
+	"500px": 500px,
+	"550px": 550px,
+	"600px": 600px,
+	"650px": 650px,
+	"700px": 700px,
+	"750px": 750px,
+	"800px": 800px,
+	"850px": 850px,
+	"900px": 900px,
+	"950px": 950px,
+	"1000px": 1000px
+)!default;
+
+// border width map
+$border-width-map: (
+    "0": 0,
+    "1": 1px,
+    "2": 2px,
+    "3": 3px,
+    "4": 4px,
+    "5": 5px,
+    "6": 6px,
+    "7": 7px,
+    "8": 8px,
+    "9": 9px,
+    "10": 10px,
+)!default;
+// border style map
+$border-style: (
+	"solid": solid,
+	"dashed": dashed,
+	"dotted": dotted,
+	"double": double,
+	"hidden": hidden,
+	"none": none,
+)!default;
+//spacers
+$spacers: (
+   "0": 0,
+   "1": ($spacer * .25),
+   "2": ($spacer * .5),
+   "3": ($spacer * .75),
+   "4": ($spacer * 1),
+   "5": ($spacer * 1.25),
+   "6": ($spacer * 1.5),
+   "7": ($spacer * 1.75),
+   "8": ($spacer * 2),
+   "9": ($spacer * 2.25),
+   "10": ($spacer * 2.5),
+   "11": ($spacer * 2.75),
+   "12": ($spacer * 3),
+   "13": ($spacer * 3.25),
+   "14": ($spacer * 3.5),
+   "15": ($spacer * 3.75),
+   "16": ($spacer * 4),
+   "17": ($spacer * 4.25),
+   "18": ($spacer * 4.5),
+   "19": ($spacer * 4.75),
+   "20": ($spacer * 5)
+)!default;
+// Zindex
+$zindex-values: (
+	"n1": -1,
+	"n2": -2,
+	"0": 0,
+	"1": 1,
+	"2": 2,
+	"3": 3
+) !default;
+
+// Letter spacing
+$letter-spacing-values: (
+	"1": 0.1rem,
+	"2": 0.115rem,
+	"3": 0.125rem,
+	"4": 0.25rem,
+	"5": 0.5rem,
+	"n1": -0.1rem,
+	"n2": -0.115rem,
+	"n3": -0.125rem,
+	"n4": -0.25rem,
+	"n5": -0.5rem,
+) !default;
+// Grid breakpoints
+//
+// Define the minimum dimensions at which your layout will change,
+// adapting to different screen sizes, for use in media queries.
+// scss-docs-start grid-breakpoints
+$grid-breakpoints: ( 
+	xs: 0, 
+	sm: 576px, 
+	md: 768px, 
+	lg: 992px, 
+	xl: 1200px, 
+	xxl: 1400px ) !default;
+// scss-docs-end grid-breakpoints
+
+// Grid containers
+//
+// Define the maximum width of `.container` for different screen sizes.
+$container-max-widths: (
+	sm: 540px,
+	md: 720px,
+	lg: 960px,
+	xl: 1140px,
+	xxl: 1320px
+) !default;

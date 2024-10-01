@@ -3,7 +3,6 @@
 @using RealWorldApp.Shared.Models
 
 <h3>Register</h3>
-
 <EditForm Model="registerModel" OnValidSubmit="RegisterUser">
     <DataAnnotationsValidator />
     <ValidationSummary />
@@ -19,19 +18,30 @@
 
     <button type="submit">Register</button>
 </EditForm>
+@if (successRegister != null)
+{
+    <span class="alert alert-info">@successRegister</span>
+}
+else if (faildRegister != null)
+{
+    <span class="alert alert-danger">@faildRegister</span>
+}
 
 @code {
-    private User user = new User();
-
     private RegisterModel registerModel = new RegisterModel();
+    private string? successRegister;
+    private string? faildRegister;
 
     private async Task RegisterUser()
     {
         var response = await Http.PostAsJsonAsync("api/auth/register", registerModel);
         if (response.IsSuccessStatusCode)
         {
-            // Redirect or show success
+            successRegister = "Congratulations, you have registered successfully!";
+        }
+        else
+        {
+            faildRegister = "You are not allowed to register.";
         }
     }
 }
-

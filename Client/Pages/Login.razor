@@ -1,11 +1,7 @@
 ﻿@page "/login"
 @inject HttpClient Http
 @using RealWorldApp.Shared.Models
-
-
-
 <h3>Login</h3>
-
 <EditForm Model="loginModel" OnValidSubmit="LoginUser">
     <DataAnnotationsValidator />
     <ValidationSummary />
@@ -21,9 +17,20 @@
 
     <button type="submit">Login</button>
 </EditForm>
+@if (successLogin != null)
+{
+    <span class="alert alert-info">@successLogin</span>
+}
+else if (successLogin != null)
+{
+    <span class="alert alert-danger">@successLogin</span>
+}
+
 
 @code {
     private LoginModel loginModel = new LoginModel();
+    private String? successLogin { get; set; }
+    private String? faildLogin { get; set; }
 
     private async Task LoginUser()
     {
@@ -31,6 +38,11 @@
         if (response.IsSuccessStatusCode)
         {
             // Handle successful login (e.g., navigate to dashboard or set token)
+            successLogin = "Congratulations you have logged in successfully";
+        }
+        else
+        {
+            faildLogin = "You are not allowed to logged in";
         }
     }
 }

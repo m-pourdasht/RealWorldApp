@@ -1,0 +1,44 @@
+﻿@using RealWorldApp.Shared.Models
+@inject HttpClient Http
+
+<h3>Create Product</h3>
+
+<EditForm Model="newProduct" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div>
+        <label>Name:</label>
+        <InputText @bind-Value="newProduct.Name" />
+    </div>
+    <div>
+        <label>Price:</label>
+        <InputNumber @bind-Value="newProduct.Price" />
+    </div>
+    <div>
+        <label>Description:</label>
+        <InputText @bind-Value="newProduct.Description" />
+    </div>
+    <div>
+        <label>Stock:</label>
+        <InputNumber @bind-Value="newProduct.Stock" />
+    </div>
+    <button type="submit">Create Product</button>
+</EditForm>
+
+@code {
+    private Product newProduct = new Product();
+
+    private async Task HandleValidSubmit()
+    {
+        var response = await Http.PostAsJsonAsync("api/product", newProduct);
+        if (response.IsSuccessStatusCode)
+        {
+            // Handle successful creation (e.g., show a success message or navigate)
+        }
+        else
+        {
+            // Handle errors (e.g., show error message)
+        }
+    }
+}

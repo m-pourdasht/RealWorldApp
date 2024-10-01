@@ -18,18 +18,21 @@ public class AuthController : ControllerBase
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterModel model)
     {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState); // Returns specific validation errors
+
         if (await _context.Users.AnyAsync(u => u.Username == model.Username))
-            return BadRequest("Username already exists.");
+            return BadRequest(new { message = "Username already exists." });
 
         var user = new User
         {
             Username = model.Username,
-            PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Password) // Hash the password
+            PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Password)
         };
 
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
 
-        return Ok();
+        return Ok(new { message = "User registered successfully." });
     }
 }

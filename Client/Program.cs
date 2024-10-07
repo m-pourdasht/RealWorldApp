@@ -1,15 +1,31 @@
-using Microsoft.AspNetCore.Components.Web;
+using Blazored.LocalStorage;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using RealWorldApp.Client;
 using RealWorldApp.Client.Services;
+using System.Net.Http.Headers;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
-builder.RootComponents.Add<HeadOutlet>("head::after");
-builder.Services.AddScoped<ProductService>();
 
-
-
+builder.Services.AddBlazoredLocalStorage();
+builder.Services.AddAuthorizationCore(); // Add authorization services
+builder.Services.AddScoped<CustomAuthStateProvider>(); // Register your custom provider
+builder.Services.AddScoped<AuthenticationStateProvider>(sp => sp.GetRequiredService<CustomAuthStateProvider>());
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+
+// Add JwtAuthorizationMessageHandler for attaching the JWT token
+builder.Services.AddScoped<JwtAuthorizationMessageHandler>();
+
+// Configure Authorized HttpClient with JWT Bearer Token Authorization and set the BaseAddress
+builder.Services.AddHttpClient("AuthorizedClient", client =>
+{
+    client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress);  // Set the BaseAddress here
+})
+.AddHttpMessageHandler<JwtAuthorizationMessageHandler>();
+
+// Register the ProductService with the AuthorizedClient
+builder.Services.AddScoped<ProductService>(sp =>
+    new ProductService(sp.GetRequiredService<IHttpClientFactory>().CreateClient("AuthorizedClient")));
 
 await builder.Build().RunAsync();

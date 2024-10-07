@@ -1,8 +1,15 @@
 ﻿@page "/login"
-@inject HttpClient Http
+@layout CustomLayout
+
+@using Microsoft.AspNetCore.Components.Authorization
 @using RealWorldApp.Shared.Models
-<h3>Login</h3>
-<EditForm Model="loginModel" OnValidSubmit="LoginUser">
+@inject HttpClient Http
+@inject Blazored.LocalStorage.ILocalStorageService _localStorage
+@inject AuthenticationStateProvider _authStateProvider
+@inject NavigationManager _navigationManager
+
+
+<EditForm Model="loginModel" OnValidSubmit="HandleLogin">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
@@ -21,28 +28,43 @@
 {
     <span class="alert alert-info">@successLogin</span>
 }
-else if (successLogin != null)
+else if (faildLogin != null)
 {
-    <span class="alert alert-danger">@successLogin</span>
+    <span class="alert alert-danger">@faildLogin</span>
 }
-
 
 @code {
     private LoginModel loginModel = new LoginModel();
-    private String? successLogin { get; set; }
-    private String? faildLogin { get; set; }
+    private string? successLogin { get; set; }
+    private string? faildLogin { get; set; }
 
-    private async Task LoginUser()
+    private async Task HandleLogin()
     {
-        var response = await Http.PostAsJsonAsync("api/auth/login", loginModel);
+        // Clear previous messages
+        successLogin = null;
+        faildLogin = null;
+
+        var response = await Http.PostAsJsonAsync("api/login", loginModel);
         if (response.IsSuccessStatusCode)
         {
-            // Handle successful login (e.g., navigate to dashboard or set token)
-            successLogin = "Congratulations you have logged in successfully";
+            var token = await response.Content.ReadAsStringAsync();
+
+            if (!string.IsNullOrEmpty(token)) // Check if token is valid
+            {
+                // await _localStorage.SetItemAsync("authToken", token);
+                ((CustomAuthStateProvider)_authStateProvider).NotifyUserAuthentication(token);
+                _navigationManager.NavigateTo("/");
+            }
+            else
+            {
+                faildLogin = "Login failed. No token received.";
+            }
         }
         else
         {
-            faildLogin = "You are not allowed to logged in";
+            faildLogin = "Login failed. Please check your credentials.";
         }
     }
+
 }
+

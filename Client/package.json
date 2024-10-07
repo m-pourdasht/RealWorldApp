@@ -17,5 +17,20 @@
   },
   "dependencies": {
     "gulp": "^5.0.0"
-  }
+  },
+  "compilerOptions": {
+    "target": "ES5",
+    "module": "ESNext", // or "commonjs"
+    "moduleResolution": "NodeNext",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": [
+    "**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

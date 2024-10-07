@@ -44,5 +44,6 @@ namespace RealWorldApp.Client.Services
             var response = await _httpClient.DeleteAsync($"api/product/{id}");
             response.EnsureSuccessStatusCode();
         }
+
     }
 }

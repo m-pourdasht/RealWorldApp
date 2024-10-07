@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using RealWorldApp.Server.Data;
 using System.Text;
+using RealWorldApp.Client.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,6 +33,10 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
     };
 });
+builder.Services.AddHttpClient(); // Add HttpClient support in the server
+
+// Register your services here
+builder.Services.AddScoped<ProductService>(); // Register the ProductService
 
 // Add Controllers and Razor Pages
 builder.Services.AddControllersWithViews();
@@ -49,7 +54,8 @@ else
     app.UseExceptionHandler("/Error");
     app.UseHsts();
 }
-
+app.UseAuthentication();
+app.UseAuthorization();
 app.UseHttpsRedirection();
 app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();

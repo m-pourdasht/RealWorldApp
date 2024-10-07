@@ -25,7 +25,7 @@ namespace RealWorldApp.Server.Controllers
             _configuration = configuration;
         }
 
-        [HttpPost("login")]
+        [HttpPost]
         public async Task<IActionResult> Login([FromBody] LoginModel model)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == model.Username);

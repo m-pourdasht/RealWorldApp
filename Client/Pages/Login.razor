@@ -1,10 +1,11 @@
 ﻿@page "/login"
 @layout CustomLayout
-
 @using Microsoft.AspNetCore.Components.Authorization
 @using RealWorldApp.Shared.Models
 @inject HttpClient Http
-@inject Blazored.LocalStorage.ILocalStorageService _localStorage
+@* @inject Blazored.LocalStorage.ILocalStorageService _localStorage *@
+@using Blazored.SessionStorage
+@inject Blazored.SessionStorage.ISessionStorageService _sessionStorage
 @inject AuthenticationStateProvider _authStateProvider
 @inject NavigationManager _navigationManager
 
@@ -52,6 +53,7 @@ else if (faildLogin != null)
             if (!string.IsNullOrEmpty(token)) // Check if token is valid
             {
                 // await _localStorage.SetItemAsync("authToken", token);
+                await _sessionStorage.SetItemAsync("authToken", token); // Store the token in sessionStorage instead of localStorage
                 ((CustomAuthStateProvider)_authStateProvider).NotifyUserAuthentication(token);
                 _navigationManager.NavigateTo("/");
             }

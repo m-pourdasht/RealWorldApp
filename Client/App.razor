@@ -1,5 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Components.Authorization
 @using System.Security.Claims
+@inject CustomAuthStateProvider _authStateProvider
+@inject NavigationManager _navigationManager
 
 <CascadingAuthenticationState>
     <Router AppAssembly="@typeof(App).Assembly">
@@ -23,4 +25,5 @@
         </NotFound>
     </Router>
 </CascadingAuthenticationState>
+
 

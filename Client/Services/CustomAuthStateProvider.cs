@@ -1,26 +1,24 @@
 ﻿using System.Security.Claims;
 using System.Text.Json;
-using Blazored.LocalStorage;
+using Blazored.SessionStorage; // Ensure you are using the correct namespace for SessionStorage
 using Microsoft.AspNetCore.Components.Authorization;
 
 public class CustomAuthStateProvider : AuthenticationStateProvider
 {
-    private readonly ILocalStorageService _localStorage;
+    private readonly ISessionStorageService _sessionStorage; // Inject ISessionStorageService
 
-    public CustomAuthStateProvider(ILocalStorageService localStorage)
+    public CustomAuthStateProvider(ISessionStorageService sessionStorage) // Constructor injection
     {
-        _localStorage = localStorage;
+        _sessionStorage = sessionStorage;
     }
 
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()
     {
-        var token = await _localStorage.GetItemAsync<string>("authToken");
+        var token = await _sessionStorage.GetItemAsync<string>("authToken"); // Use sessionStorage here
 
         if (string.IsNullOrWhiteSpace(token))
         {
-            // No token, user is not authenticated
-            var anonymous = new ClaimsIdentity();
-            return new AuthenticationState(new ClaimsPrincipal(anonymous));
+            return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
         }
 
         // Parse token and create claims
@@ -47,6 +45,13 @@ public class CustomAuthStateProvider : AuthenticationStateProvider
         var authState = Task.FromResult(new AuthenticationState(anonymous));
         NotifyAuthenticationStateChanged(authState);
     }
+
+    public async Task Logout()
+    {
+        await _sessionStorage.RemoveItemAsync("authToken"); // Remove the token from sessionStorage
+        NotifyUserLogout(); // Notify the system that the user has logged out
+    }
+
     public static class JwtParser
     {
         public static IEnumerable<Claim> ParseClaimsFromJwt(string jwt)
@@ -67,5 +72,4 @@ public class CustomAuthStateProvider : AuthenticationStateProvider
             return Convert.FromBase64String(base64);
         }
     }
-
 }

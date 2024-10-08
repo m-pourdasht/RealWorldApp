@@ -18,39 +18,39 @@
     </div>
     <div>
         <label>Password:</label>
-        <InputText class="p-14" @bind-Value="loginModel.Password" type="password" />
+        <InputText @bind-Value="loginModel.Password" type="password" />
     </div>
 
     <button type="submit">Login</button>
 </EditForm>
-@if (successLogin != null)
-{
-    <span class="alert alert-info">@successLogin</span>
-}
-else if (faildLogin != null)
+
+@if (faildLogin != null)
 {
     <span class="alert alert-danger">@faildLogin</span>
 }
 
+// Link to the registration page
+<div>
+    <p>Don't have an account? <a href="/register">Register here</a>.</p>
+</div>
+
 @code {
     private LoginModel loginModel = new LoginModel();
-    private string? successLogin { get; set; }
     private string? faildLogin { get; set; }
 
     private async Task HandleLogin()
     {
-        // Clear previous messages
-        successLogin = null;
         faildLogin = null;
 
         var response = await Http.PostAsJsonAsync("api/login", loginModel);
+
         if (response.IsSuccessStatusCode)
         {
             var token = await response.Content.ReadAsStringAsync();
 
-            if (!string.IsNullOrEmpty(token) && token.Split('.').Length == 3) // Check if token is valid
+            if (!string.IsNullOrEmpty(token) && token.Split('.').Length == 3)
             {
-                await _sessionStorage.SetItemAsync("authToken", token); // Save token to session storage
+                await _sessionStorage.SetItemAsync("authToken", token);
                 ((CustomAuthStateProvider)_authStateProvider).NotifyUserAuthentication(token);
                 _navigationManager.NavigateTo("/");
             }
@@ -58,6 +58,11 @@ else if (faildLogin != null)
             {
                 faildLogin = "Login failed. No valid token received.";
             }
+        }
+        else if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+        {
+            // User not found, redirect to register page
+            _navigationManager.NavigateTo("/register");
         }
         else
         {

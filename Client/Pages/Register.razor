@@ -2,6 +2,7 @@
 @layout CustomLayout
 @inject HttpClient Http
 @using RealWorldApp.Shared.Models
+@inject NavigationManager _navigationManager
 
 <h3>Register</h3>
 <EditForm Model="registerModel" OnValidSubmit="RegisterUser">
@@ -19,6 +20,7 @@
 
     <button type="submit">Register</button>
 </EditForm>
+
 @if (successRegister != null)
 {
     <span class="alert alert-info">@successRegister</span>
@@ -39,6 +41,7 @@ else if (faildRegister != null)
         if (response.IsSuccessStatusCode)
         {
             successRegister = "Congratulations, you have registered successfully!";
+            _navigationManager.NavigateTo("/login"); // Redirect to login page after successful registration
         }
         else
         {
@@ -46,3 +49,4 @@ else if (faildRegister != null)
         }
     }
 }
+

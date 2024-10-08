@@ -2,7 +2,7 @@
 @attribute [Authorize]
 @using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Authorization
-
+@inject NavigationManager _navigationManager
 @using RealWorldApp.Client.Components
 @using RealWorldApp.Shared.Models
 
@@ -14,7 +14,13 @@
     <CreateProduct />
 </div>
 
-@code{
-
-    
+@code {
+    // protected override async Task OnInitializedAsync()
+    // {
+    //     var authState = await _authStateProvider.GetAuthenticationStateAsync();
+    //     if (authState.User.Identity.IsAuthenticated == false)
+    //     {
+    //         _navigationManager.NavigateTo("/login"); // Redirect to login if not authenticated
+    //     }
+    // }
 }

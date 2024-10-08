@@ -1,27 +1,26 @@
 ﻿using System.Security.Claims;
 using System.Text.Json;
-using Blazored.SessionStorage; // Ensure you are using the correct namespace for SessionStorage
+using Blazored.SessionStorage;
 using Microsoft.AspNetCore.Components.Authorization;
 
 public class CustomAuthStateProvider : AuthenticationStateProvider
 {
-    private readonly ISessionStorageService _sessionStorage; // Inject ISessionStorageService
+    private readonly ISessionStorageService _sessionStorage;
 
-    public CustomAuthStateProvider(ISessionStorageService sessionStorage) // Constructor injection
+    public CustomAuthStateProvider(ISessionStorageService sessionStorage)
     {
         _sessionStorage = sessionStorage;
     }
 
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()
     {
-        var token = await _sessionStorage.GetItemAsync<string>("authToken"); // Use sessionStorage here
+        var token = await _sessionStorage.GetItemAsync<string>("authToken");
 
         if (string.IsNullOrWhiteSpace(token))
         {
             return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
         }
 
-        // Parse token and create claims
         var claims = JwtParser.ParseClaimsFromJwt(token);
         var identity = new ClaimsIdentity(claims, "jwtAuthType");
         var user = new ClaimsPrincipal(identity);
@@ -29,8 +28,10 @@ public class CustomAuthStateProvider : AuthenticationStateProvider
         return new AuthenticationState(user);
     }
 
-    public void NotifyUserAuthentication(string token)
+    public async Task NotifyUserAuthentication(string token)
     {
+        await _sessionStorage.SetItemAsync("authToken", token);
+
         var claims = JwtParser.ParseClaimsFromJwt(token);
         var identity = new ClaimsIdentity(claims, "jwtAuthType");
         var user = new ClaimsPrincipal(identity);
@@ -48,15 +49,22 @@ public class CustomAuthStateProvider : AuthenticationStateProvider
 
     public async Task Logout()
     {
-        await _sessionStorage.RemoveItemAsync("authToken"); // Remove the token from sessionStorage
-        NotifyUserLogout(); // Notify the system that the user has logged out
+        await _sessionStorage.RemoveItemAsync("authToken");
+        NotifyUserLogout();
     }
 
     public static class JwtParser
     {
         public static IEnumerable<Claim> ParseClaimsFromJwt(string jwt)
         {
-            var payload = jwt.Split('.')[1];
+            var parts = jwt.Split('.');
+
+            if (parts.Length != 3)
+            {
+                throw new ArgumentException("JWT does not have the correct format.");
+            }
+
+            var payload = parts[1];
             var jsonBytes = ParseBase64WithoutPadding(payload);
             var keyValuePairs = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonBytes);
             return keyValuePairs.Select(kvp => new Claim(kvp.Key, kvp.Value.ToString()));

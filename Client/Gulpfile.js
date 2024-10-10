@@ -1,7 +1,7 @@
 const gulp = require('gulp');
 const concat = require('gulp-concat');
 const sass = require('gulp-sass')(require('sass')); // Specify the sass compiler
-const uglify = require('gulp-uglify'); // Add this line
+const uglify = require('gulp-uglify');
 
 
 // Task to bundle CSS files output

@@ -20,7 +20,7 @@
   },
   "compilerOptions": {
     "target": "ES5",
-    "module": "ESNext", // or "commonjs"
+    "module": "ESNext",
     "moduleResolution": "NodeNext",
     "strict": true,
     "esModuleInterop": true,

@@ -2,6 +2,7 @@
 @using RealWorldApp.Shared.Models
 @using RealWorldApp.Client.Services
 @inject ProductService ProductService
+@inject IJSRuntime JSRuntime
 
 @if (products == null)
 {
@@ -26,6 +27,7 @@ else
                     <td>@product.Price</td>
                     <td>@product.Description</td>
                     <td>@product.Stock</td>
+                    <td><button class="btn btn-danger" @onclick="() => DeleteProduct(product.Id)">Delete</button></td>
                 </tr>
             }
         </tbody>
@@ -38,5 +40,15 @@ else
     protected override async Task OnInitializedAsync()
     {
         products = await ProductService.GetProductsAsync();
+    }
+    private async Task DeleteProduct(int productId)
+    {
+        // Invoke a confirmation dialog using JSRuntime
+        var confirmDelete = await JSRuntime.InvokeAsync<bool>("confirm", new object[] { "Are you sure you want to delete this product?" });
+        if (confirmDelete)
+        {
+            await ProductService.DeleteProductAsync(productId); // Call service to delete
+            products = await ProductService.GetProductsAsync(); // Refresh the product list
+        }
     }
 }

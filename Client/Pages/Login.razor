@@ -8,31 +8,51 @@
 @inject AuthenticationStateProvider _authStateProvider
 @inject NavigationManager _navigationManager
 
-<EditForm Model="loginModel" OnValidSubmit="HandleLogin">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card mt-5 shadow">
+                <div class="card-body">
+                    <h3 class="card-title text-center mb-4">Login</h3>
 
-    <div>
-        <label>Username:</label>
-        <InputText @bind-Value="loginModel.Username" />
+                    <EditForm Model="loginModel" OnValidSubmit="HandleLogin">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary />
+
+                        <!-- Username field with floating label -->
+                        <div class="form-floating mb-3">
+                            <InputText id="username" @bind-Value="loginModel.Username" class="form-control" placeholder="Username" />
+                            <label for="username">Username</label>
+                        </div>
+
+                        <!-- Password field with floating label -->
+                        <div class="form-floating mb-3">
+                            <InputText id="password" @bind-Value="loginModel.Password" type="password" class="form-control" placeholder="Password" />
+                            <label for="password">Password</label>
+                            <small id="passwordHelpBlock" class="form-text text-muted">
+                                Your password must be 8-20 characters long, contain letters and numbers, and must not contain spaces, special characters, or emoji.
+                            </small>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100" onclick="SeyHello()">Login</button>
+
+                        @if (faildLogin != null)
+                        {
+                            <div class="alert alert-danger mt-3 position-fixed top-0 start-0" role="alert">
+                                @faildLogin
+                            </div>
+                        }
+                    </EditForm>
+                </div>
+            </div>
+        </div>
     </div>
-    <div>
-        <label>Password:</label>
-        <InputText @bind-Value="loginModel.Password" type="password" />
-    </div>
-
-    <button type="submit">Login</button>
-</EditForm>
-
-@if (faildLogin != null)
-{
-    <span class="alert alert-danger">@faildLogin</span>
-}
-
-// Link to the registration page
-<div>
-    <p>Don't have an account? <a href="/register">Register here</a>.</p>
 </div>
+<script>
+    function SeyHello(){
+        var name = prompt("enter your name");
+    }
+</script>
 
 @code {
     private LoginModel loginModel = new LoginModel();

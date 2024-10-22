@@ -6,7 +6,7 @@ const uglify = require('gulp-uglify');
 
 // Task to bundle CSS files output
 gulp.task('bundle-css', function () {
-    return gulp.src('gulp/src/scss/*.scss')
+    return gulp.src('gulp/src/scss/app.scss')
         .pipe(sass().on('error', sass.logError)) // Compile SCSS to CSS
         .pipe(concat('bundle.css'))
         .pipe(gulp.dest('wwwroot/assets/css'));

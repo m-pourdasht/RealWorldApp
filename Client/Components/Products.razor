@@ -10,13 +10,34 @@
 }
 else
 {
+    <button class="btn btn-info" @onclick="OnClickSortName">Sort names</button>
     <table class="table">
         <thead>
             <tr>
-                <th>Name</th>
-                <th>Price</th>
-                <th>Description</th>
-                <th>Stock</th>
+                <th>
+                    Name
+                    <button class="btn btn-icon" @onclick="OnClickSortName">
+                        <i class="fa" @(sortByNameAsc ? "fa-arrow-up" : "fa-arrow-down" )></i>
+                    </button>
+                </th>
+                <th>
+                    Price
+                    <button class="btn btn-icon" @onclick="OnClickSortPrice">
+                        <i class="fa" @(sortByPriceAsc ? "fa-arrow-up" : "fa-arrow-down" )></i>
+                    </button>
+                </th>
+                <th>
+                    Description
+                    <button class="btn btn-icon" @onclick="OnClickSortDescription">
+                        <i class="fa" @(sortByDescriptionAsc ? "fa-arrow-up" : "fa-arrow-down" )></i>
+                    </button>
+                </th>
+                <th>
+                    Stock
+                    <button class="btn btn-icon" @onclick="OnClickSortStock">
+                        <i class="fa" @(sortByStockAsc ? "fa-arrow-up" : "fa-arrow-down" )></i>
+                    </button>
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -36,11 +57,16 @@ else
 
 @code {
     private List<Product> products;
+    private bool sortByNameAsc = true;
+    private bool sortByPriceAsc = true;
+    private bool sortByDescriptionAsc = true;
+    private bool sortByStockAsc = true;
 
     protected override async Task OnInitializedAsync()
     {
         products = await ProductService.GetProductsAsync();
     }
+
     private async Task DeleteProduct(int productId)
     {
         // Invoke a confirmation dialog using JSRuntime
@@ -50,5 +76,57 @@ else
             await ProductService.DeleteProductAsync(productId); // Call service to delete
             products = await ProductService.GetProductsAsync(); // Refresh the product list
         }
+    }
+
+    private void OnClickSortName()
+    {
+        if (sortByNameAsc)
+        {
+            products = products.OrderBy(p => p.Name).ToList();
+        }
+        else
+        {
+            products = products.OrderByDescending(p => p.Name).ToList();
+        }
+        sortByNameAsc = !sortByNameAsc;
+    }
+
+    private void OnClickSortPrice()
+    {
+        if (sortByPriceAsc)
+        {
+            products = products.OrderBy(p => p.Price).ToList();
+        }
+        else
+        {
+            products = products.OrderByDescending(p => p.Price).ToList();
+        }
+        sortByPriceAsc = !sortByPriceAsc;
+    }
+
+    private void OnClickSortDescription()
+    {
+        if (sortByDescriptionAsc)
+        {
+            products = products.OrderBy(p => p.Description).ToList();
+        }
+        else
+        {
+            products = products.OrderByDescending(p => p.Description).ToList();
+        }
+        sortByDescriptionAsc = !sortByDescriptionAsc;
+    }
+
+    private void OnClickSortStock()
+    {
+        if (sortByStockAsc)
+        {
+            products = products.OrderBy(p => p.Stock).ToList();
+        }
+        else
+        {
+            products = products.OrderByDescending(p => p.Stock).ToList();
+        }
+        sortByStockAsc = !sortByStockAsc;
     }
 }

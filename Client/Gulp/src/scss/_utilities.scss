@@ -1,171 +1,156 @@
-@use 'sass:math';
+﻿
+@use 'sass:map';
+@import "variables"; // Import your custom variables
+// Custom spacers (for margin, padding, etc.)
+$spacers: map-merge(( 
+6: $spacer * 4, // 64px
+7: $spacer * 5, // 80px
+8: $spacer * 6.25, // 100px
+9: $spacer * 7.5, // 120px
+10: $spacer * 9.375, // 150px
+11: $spacer * 10, // 160px
+12: $spacer * 11, // 176px
+13: $spacer * 12, // 192px
+14: $spacer * 13, // 208px
+15: $spacer * 14, // 224px
+16: $spacer * 15, // 240px
+17: $spacer * 16, // 256px
+18: $spacer * 17, // 272px
+19: $spacer * 18, // 288px
+20: $spacer * 19 // 304px
+), $spacers);
 
-$utilities: (
-  "color": map-merge(
-   (
-    "prefix": "text",
-    "values": $theme-text-colors
-
+// Custom width utilities (5% increments)
+$utilities:(
+  "width": (
+    property: width,
+    class: w,
+    values: (
+    unset: unset,
+	25: 25%,
+	50: 50%,
+	75: 75%,
+	100: 100%,
+	auto: auto,
+	1px: 1px,
+	2px: 2px,
+	3px: 3px,
+	4px: 4px,
+	5px: 5px,
+	6px: 6px,
+	7px: 7px,
+	8px: 8px,
+	9px: 9px,
+	10px: 10px,
+	15px: 15px,
+	20px: 20px,
+	25px: 25px,
+	30px: 30px,
+	35px: 35px,
+	40px: 40px,
+	45px: 45px,
+	50px: 50px,
+	55px: 55px,
+	60px: 60px,
+	65px: 65px,
+	70px: 70px,
+	75px: 75px,
+	80px: 80px,
+	85px: 85px,
+	90px: 90px,
+	95px: 95px,
+	100px: 100px,
+	125px: 125px,
+	150px: 150px,
+	175px: 175px,
+	200px: 200px,
+	225px: 225px,
+	250px: 250px,
+	275px: 275px,
+	300px: 300px,
+	325px: 325px,
+	350px: 350px,
+	375px: 375px,
+	400px: 400px,
+	425px: 425px,
+	450px: 450px,
+	475px: 457px,
+	500px: 500px,
+	550px: 550px,
+	600px: 600px,
+	650px: 650px,
+	700px: 700px,
+	750px: 750px,
+	800px: 800px,
+	850px: 850px,
+	900px: 900px,
+	950px: 950px,
+	1000px: 1000px
+    )
    ),
-   (
-    "prefix": "text-light",
-    "values": $theme-light-colors
-   )
-  ),
-  "background-color": map-merge(
-    (
-      "prefix": "bg",
-      "values": $theme-text-colors
-      ),
-    (
-      "prefix": "bg-light",
-      "values": $theme-light-colors
+	"height": (
+    property: height,
+    class: h,
+    values: (
+    unset: unset,
+	25: 25%,
+	50: 50%,
+	75: 75%,
+	100: 100%,
+	auto: auto,
+	1px: 1px,
+	2px: 2px,
+	3px: 3px,
+	4px: 4px,
+	5px: 5px,
+	6px: 6px,
+	7px: 7px,
+	8px: 8px,
+	9px: 9px,
+	10px: 10px,
+	15px: 15px,
+	20px: 20px,
+	25px: 25px,
+	30px: 30px,
+	35px: 35px,
+	40px: 40px,
+	45px: 45px,
+	50px: 50px,
+	55px: 55px,
+	60px: 60px,
+	65px: 65px,
+	70px: 70px,
+	75px: 75px,
+	80px: 80px,
+	85px: 85px,
+	90px: 90px,
+	95px: 95px,
+	100px: 100px,
+	125px: 125px,
+	150px: 150px,
+	175px: 175px,
+	200px: 200px,
+	225px: 225px,
+	250px: 250px,
+	275px: 275px,
+	300px: 300px,
+	325px: 325px,
+	350px: 350px,
+	375px: 375px,
+	400px: 400px,
+	425px: 425px,
+	450px: 450px,
+	475px: 457px,
+	500px: 500px,
+	550px: 550px,
+	600px: 600px,
+	650px: 650px,
+	700px: 700px,
+	750px: 750px,
+	800px: 800px,
+	850px: 850px,
+	900px: 900px,
+	950px: 950px,
+	1000px: 1000px
     )
-  ),
-
-"opacity": (
-"prefix": "o",
-    "values": (
-        "10": 0.1,
-        "20": 0.2,
-        "30": 0.3,
-        "40": 0.4,
-        "50": 0.5,
-        "60": 0.6,
-        "70": 0.7,
-        "80": 0.8,
-        "90": 0.9,
-        "100": 1,
-    )
-),
-"display": (
-"prefix": "d",
-    "values": (
-        "none": none,
-        "block": block,
-        "flex": flex,
-        "inline": inline,
-        "inline-block": inline-block
-    )
-),
-"line-height": (
-"prefix": "lh",
-    "values": (
-        "0": 0,
-        "1": 1,
-        "sm": $line-height-sm,
-        "base": $line-height-base,
-        "lg": $line-height-base * 1.5rem,
-        "xl": $line-height-base * 2rem,
-        "xxl": $line-height-base * 2.5rem
-    )
- ),
-"border-radius": (
-"prefix": "border-r",
-    "values": (
-      "default": $base-border-radius,
-      "none": 0,
-      "xs": math.div($base-border-radius, 4),
-      "sm": math.div($base-border-radius, 2),
-      "md": $base-border-radius,
-      "lg": $base-border-radius * 2,
-      "xl": $base-border-radius * 4,
-      "xxl": $base-border-radius * 6,
-      "full": 50%,
-    )
-  ),
-    "font-size": (
-    "prefix": "fs",
-       "values": (
-       "1": $h1-font-size,   // 22.75px
-       "2": $h2-font-size,   // 19.50px
-       "3": $h3-font-size,   // 17.55px
-       "4": $h4-font-size,   // 16.25px
-       "5": $h5-font-size,   // 14.95px
-       "6": $h6-font-size,   // 13.95px
-       "7": $base-font-size* 0.95,  // 12.35px
-       "8": $base-font-size * 0.85,  // 11.05px
-       "9": $base-font-size * 0.75,  // 9.75px
-       "10": $base-font-size * 0.5,  // 6.50px
-
-       "base": $base-font-size, // 13px
-       "fluid": 100%, // 100%
-
-       "2x": $base-font-size * 2,        // 26px
-       "2qx": $base-font-size * 2.25,    // 29.25px
-       "2hx": $base-font-size * 2.5,     // 32.5px
-       "2tx": $base-font-size * 2.75,    // 35.75px
-
-       "3x": $base-font-size * 3,        // 39px
-       "3qx": $base-font-size * 3.25,    // 42.25px
-       "3hx": $base-font-size * 3.5,     // 45.5px
-       "3tx": $base-font-size * 3.75,    // 48.75px
-
-       "4x": $base-font-size * 4,        // 52px
-       "4qx": $base-font-size * 4.25,    // 55.25px
-       "4hx": $base-font-size * 4.5,     // 58.5px
-       "4tx": $base-font-size * 4.75,    // 61.75px
-
-       "5x": $base-font-size * 5,        // 65px
-       "5qx": $base-font-size * 5.25,    // 68.25px
-       "5hx": $base-font-size * 5.5,     // 71.5px
-       "5tx": $base-font-size * 5.75     // 74.75px
-       )
-   ),
-    
-    "width": (
-    "prefix": "w",
-        "values": $custom-sizes
-    ),
-    "max-width": (
-    "prefix": "max-w",
-        "values": $custom-sizes
-    ),
-    "min-width": (
-    "prefix": "min-w",
-        "values": $custom-sizes
-    ),
-    "height": (
-    "prefix": "h",
-        "values": $custom-sizes
-    ),
-    "max-height": (
-    "prefix": "max-h",
-        "values": $custom-sizes
-    ),
-    "min-height": (
-    "prefix": "min-h",
-        "values": $custom-sizes
-    ),
-    "z-index": (
-    "prefix": "z-index",
-        "values": $zindex-values
-    ),
-    "letter-spacing": (
-    "prefix": "l-spacing",
-        "values": $letter-spacing-values
-    ),
-    
-);
-
-/* generate utility classes*/
-/*mapname are colors, font-sizes, lin-height, opacity, display and...*/
-@each $mapname, $map in $utilities {
-    $prefix: map-get($map, "prefix"); //will get prfix in each map and will put in prefix varaible
-    $values: map-get($map, "values"); //vill get value in each map and will put in values varaible
-
-    @each $k, $v in $values {
-        @if($k == "default") {
-            .#{$prefix} {
-                #{$mapname}: $v;
-            }
-        }
-        @else {
-            .#{$prefix}-#{$k} {
-                #{$mapname}: $v;
-            }
-        }
-    }
-}
-
- 
+));

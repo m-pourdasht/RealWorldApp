@@ -1,0 +1,6 @@
+﻿<button @attributes=dataAtribute></button>
+
+@code {
+    [Parameter(CaptureUnmatchedValues =true)] 
+    public Dictionary<string, object>? dataAtribute { get; set; }
+}

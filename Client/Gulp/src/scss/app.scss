@@ -1,40 +1,22 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+// 1. Include functions first (so you can manipulate colors, SVGs, calc, etc)
+@import "node_modules/bootstrap/scss/functions";
 
-// variables & functions
+// 2. Include any default variable overrides here
 @import 'variables';
-@import 'functions';
 
-// mixins
-//@import 'Mixins/breackpoints';
+// 3. Include remainder of required Bootstrap stylesheets
+@import "node_modules/bootstrap/scss/variables";
+@import "node_modules/bootstrap/scss/mixins";
 
-//@import 'colors';
+// 4. Include any optional Bootstrap components as you like
 
-// base & layout
-@import 'base';
-@import 'breakpoints';
-@import 'grid';
-@import 'text';
 
-/*@import "colors";*/
-
-// components (button, card, navbar etc)
-@import 'Components/card';
-@import 'Components/button';
-@import 'Components/navbar';
-@import 'Components/badge';
-
-// utilities (margin, padding, opacity, etc)
+// 5. Add additional custom code here
 @import 'utilities';
+@import "node_modules/bootstrap/scss/bootstrap";
 
-// loops
-@import 'Helpers/loops';
 
-//@import '~bootstrap/scss/bootstrap';
-
-html, body {
-    font-family: $font-family-sans-serif;
-}
-
+// Custom styles
 #blazor-error-ui {
     background: lightyellow;
     bottom: 0;
@@ -61,7 +43,7 @@ html, body {
 }
 
 .blazor-error-boundary::after {
-    content: "An error has occurred."
+    content: "An error has occurred.";
 }
 
 .loading-progress {
@@ -96,7 +78,8 @@ html, body {
 .loading-progress-text:after {
     content: var(--blazor-load-percentage-text, "Loading");
 }
-.responsive-test {
+
+/*.responsive-test {
     @include sm {
         color: red;
     }
@@ -112,11 +95,8 @@ html, body {
     @include xl {
         color: yellow;
     }
-    //@include xxl {
-    //    color: green;
-    //}
 
     @include breakpoint(1400px) {
         color: tan;
     }
-}
+}*/

@@ -3,57 +3,76 @@
 @using RealWorldApp.Client.Services
 @inject ProductService ProductService
 @inject IJSRuntime JSRuntime
+@inject BlockUIService BlockUI
 
-@if (products == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-    <button class="btn btn-info" @onclick="OnClickSortName">Sort names</button>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    Name
-                    <button class="btn btn-icon" @onclick="OnClickSortName">
-                        <i class="fa" @(sortByNameAsc ? "fa-arrow-up" : "fa-arrow-down" )></i>
-                    </button>
-                </th>
-                <th>
-                    Price
-                    <button class="btn btn-icon" @onclick="OnClickSortPrice">
-                        <i class="fa" @(sortByPriceAsc ? "fa-arrow-up" : "fa-arrow-down" )></i>
-                    </button>
-                </th>
-                <th>
-                    Description
-                    <button class="btn btn-icon" @onclick="OnClickSortDescription">
-                        <i class="fa" @(sortByDescriptionAsc ? "fa-arrow-up" : "fa-arrow-down" )></i>
-                    </button>
-                </th>
-                <th>
-                    Stock
-                    <button class="btn btn-icon" @onclick="OnClickSortStock">
-                        <i class="fa" @(sortByStockAsc ? "fa-arrow-up" : "fa-arrow-down" )></i>
-                    </button>
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var product in products)
-            {
+<div id="DataContainer" class="card h-100 p-5">
+    @if (products == null)
+    {
+        <div class="text-center">
+            <div class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <button class="btn btn-info" @onclick="OnClickSortName">Sort names</button>
                 <tr>
-                    <td>@product.Name</td>
-                    <td>@product.Price</td>
-                    <td>@product.Description</td>
-                    <td>@product.Stock</td>
-                    <td><button class="btn btn-danger" @onclick="() => DeleteProduct(product.Id)">Delete</button></td>
+                    <th>
+                        Name
+                        <i @onclick="OnClickSortStock" class="fa @(sortByDescriptionAsc ? "fa-arrow-up" : "fa-arrow-down" )"></i>
+                    </th>
+                    <th>
+                        Price
+                        <i @onclick="OnClickSortStock" class="fa @(sortByDescriptionAsc ? "fa-arrow-up" : "fa-arrow-down" )"></i>
+                    </th>
+                    <th>
+                        Description
+                        <i @onclick="OnClickSortStock" class="fa @(sortByDescriptionAsc ? "fa-arrow-up" : "fa-arrow-down" )"></i>
+                    </th>
+                    <th>
+                        Stock
+                        <i @onclick="OnClickSortStock" class="fa @(sortByDescriptionAsc ? "fa-arrow-up" : "fa-arrow-down" )"></i>
+                    </th>
                 </tr>
-            }
-        </tbody>
-    </table>
-}
+            </thead>
+            <tbody>
+                @foreach (var product in products)
+                {
+                    <tr>
+                        <td>@product.Name</td>
+                        <td>@product.Price</td>
+                        <td>@product.Description</td>
+                        <td>@product.Stock</td>
+                        <td><button class="btn btn-danger" @onclick="() => DeleteProduct(product.Id)">Delete</button></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    
+</div>
+<div class="card p-5 my-3 my-lg-6">
+    @if (products != null)
+    {
+        var matchingProducts = products.Where(p => p.Name == "4K Ultra HD Smart TV");
+        if (matchingProducts.Any())
+        {
+            <ul>
+                @foreach (var matchingProduct in matchingProducts)
+                {
+                    <li>Product found: @matchingProduct.Name</li>
+                }
+            </ul>
+        }
+    }
+    else
+    {
+        <span>No product with ID 1 found</span>
+    }
+</div>
 
 @code {
     private List<Product> products;
@@ -64,17 +83,35 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        products = await ProductService.GetProductsAsync();
+        // Block UI when loading data
+        await BlockUI.Block("DataContainer");
+        try
+        {
+            await Task.Delay(10000);
+            products = await ProductService.GetProductsAsync();
+        }
+        finally
+        {
+            await BlockUI.Release("DataContainer");
+        }
     }
 
     private async Task DeleteProduct(int productId)
     {
-        // Invoke a confirmation dialog using JSRuntime
+        // Confirm deletion with the user
         var confirmDelete = await JSRuntime.InvokeAsync<bool>("confirm", new object[] { "Are you sure you want to delete this product?" });
         if (confirmDelete)
         {
-            await ProductService.DeleteProductAsync(productId); // Call service to delete
-            products = await ProductService.GetProductsAsync(); // Refresh the product list
+            await BlockUI.Block("DataContainer"); // Block the UI during delete action
+            try
+            {
+                await ProductService.DeleteProductAsync(productId); // Call service to delete
+                products = await ProductService.GetProductsAsync(); // Refresh the product list
+            }
+            finally
+            {
+                await BlockUI.Release("DataContainer");
+            }
         }
     }
 

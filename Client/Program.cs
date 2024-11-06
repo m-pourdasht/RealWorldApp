@@ -16,6 +16,7 @@ builder.Services.AddScoped<CustomAuthStateProvider>(); // Register your custom p
 builder.Services.AddScoped<AuthenticationStateProvider>(sp => sp.GetRequiredService<CustomAuthStateProvider>());
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 builder.Services.AddBlazoredSessionStorage();
+builder.Services.AddSingleton<BlockUIService>();
 
 // Add JwtAuthorizationMessageHandler for attaching the JWT token
 builder.Services.AddScoped<JwtAuthorizationMessageHandler>();

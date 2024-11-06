@@ -34,7 +34,8 @@
                             </small>
                         </div>
 
-                        <button type="submit" class="btn btn-primary w-100" onclick="SeyHello()">Login</button>
+                        @* <button type="submit" class="btn btn-primary w-100" onclick="SeyHello()">Login</button> *@
+                        <button type="submit" class="btn btn-primary w-100">Login</button>
 
                         @if (faildLogin != null)
                         {
@@ -48,11 +49,11 @@
         </div>
     </div>
 </div>
-<script>
+@* <script>
     function SeyHello(){
         var name = prompt("enter your name");
     }
-</script>
+</script> *@
 
 @code {
     private LoginModel loginModel = new LoginModel();

@@ -1,10 +1,12 @@
 ﻿@page "/products"
+@using RealWorldApp.Client.Components
 @using RealWorldApp.Shared.Models
 @using RealWorldApp.Client.Services
 @inject ProductService ProductService
 @inject IJSRuntime JSRuntime
 @inject BlockUIService BlockUI
 
+@* using DataContainer id to say to Block() methode to block the table till loading all the data *@
 <div id="DataContainer" class="card h-100 p-5">
     @if (products == null)
     {
@@ -18,23 +20,35 @@
     {
         <table class="table">
             <thead>
-                <button class="btn btn-info" @onclick="OnClickSortName">Sort names</button>
+                <tr>
+                    <div>
+                        <button class="btn btn-info" @onclick="OnClickSortName">
+                            <i class="fa-solid fa-sort bg-transparent"></i> Sort names
+                        </button>
+                        <button class="btn btn-info" @onclick="ShowCreateProductModal">
+                            <i class="fa-solid fa-plus bg-transparent"></i> Create new product
+                        </button>
+                    </div>
+                </tr>
                 <tr>
                     <th>
                         Name
-                        <i @onclick="OnClickSortStock" class="fa @(sortByDescriptionAsc ? "fa-arrow-up" : "fa-arrow-down" )"></i>
+                        <i @onclick="OnClickSortStock" class="fa fa-solid @(sortByDescriptionAsc ? "fa-arrow-up" : "fa-arrow-down" )"></i>
                     </th>
                     <th>
                         Price
-                        <i @onclick="OnClickSortStock" class="fa @(sortByDescriptionAsc ? "fa-arrow-up" : "fa-arrow-down" )"></i>
+                        <i @onclick="OnClickSortStock" class="fa fa-solid @(sortByDescriptionAsc ? "fa-arrow-up" : "fa-arrow-down" )"></i>
                     </th>
                     <th>
                         Description
-                        <i @onclick="OnClickSortStock" class="fa @(sortByDescriptionAsc ? "fa-arrow-up" : "fa-arrow-down" )"></i>
+                        <i @onclick="OnClickSortStock" class="fa fa-solid @(sortByDescriptionAsc ? "fa-arrow-up" : "fa-arrow-down" )"></i>
                     </th>
                     <th>
                         Stock
-                        <i @onclick="OnClickSortStock" class="fa @(sortByDescriptionAsc ? "fa-arrow-up" : "fa-arrow-down" )"></i>
+                        <i @onclick="OnClickSortStock" class="fa fa-solid @(sortByDescriptionAsc ? "fa-arrow-up" : "fa-arrow-down" )"></i>
+                    </th>
+                    <th>
+                        Action
                     </th>
                 </tr>
             </thead>
@@ -46,13 +60,12 @@
                         <td>@product.Price</td>
                         <td>@product.Description</td>
                         <td>@product.Stock</td>
-                        <td><button class="btn btn-danger" @onclick="() => DeleteProduct(product.Id)">Delete</button></td>
+                        <td><i @onclick="() => DeleteProduct(product.Id)" class="fa-solid fa-trash text-danger" ></i></td>
                     </tr>
                 }
             </tbody>
         </table>
     }
-    
 </div>
 <div class="card p-5 my-3 my-lg-6">
     @if (products != null)
@@ -73,9 +86,11 @@
         <span>No product with ID 1 found</span>
     }
 </div>
+<CreateProduct @ref="createProduct" OnProductCreated="RefreshProducts" />
 
 @code {
     private List<Product> products;
+    private CreateProduct createProduct;
     private bool sortByNameAsc = true;
     private bool sortByPriceAsc = true;
     private bool sortByDescriptionAsc = true;
@@ -87,7 +102,7 @@
         await BlockUI.Block("DataContainer");
         try
         {
-            await Task.Delay(10000);
+            await Task.Delay(2000);
             products = await ProductService.GetProductsAsync();
         }
         finally
@@ -113,6 +128,20 @@
                 await BlockUI.Release("DataContainer");
             }
         }
+    }
+    private void ShowCreateProductModal()
+    {
+        createProduct.ShowModal();
+    }
+
+    private async Task RefreshProducts()
+    {
+        await LoadProducts();
+    }
+
+    private async Task LoadProducts()
+    {
+        products = await ProductService.GetProductsAsync();
     }
 
     private void OnClickSortName()

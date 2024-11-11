@@ -1,44 +1,76 @@
 ﻿@using RealWorldApp.Shared.Models
 @inject HttpClient Http
 
-<h3>Create Product</h3>
-
-<EditForm Model="newProduct" OnValidSubmit="HandleValidSubmit">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-
-    <div>
-        <label>Name:</label>
-        <InputText @bind-Value="newProduct.Name" />
+<div class="modal fade @(isVisible ? "show d-block" : "d-none")" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create New Product</h5>
+                <a class="close " @onclick="HideModal" data-dismiss="modal" aria-label="Close" style="cursor: pointer;">
+                    <span class="text-dark fs-4" aria-hidden="true">&times;</span>
+                </a>
+            </div>
+            <div class="modal-body">
+                <EditForm Model="newProduct" OnValidSubmit="HandleValidSubmit">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
+                    <div class="input-group mb-3">
+                        <span class="col-5 me-2">Product Name:</span>
+                        <span class="col-7"><InputText @bind-Value="newProduct.Name" class="form-control" /></span>
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="col-5 me-2">Product Price:</span>
+                        <span class="col-7"><InputNumber @bind-Value="newProduct.Price" class="form-control" /></span>
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="col-5 me-2">Product Description:</span>
+                        <span class="col-7"><InputText @bind-Value="newProduct.Description" class="form-control" /></span>
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="col-5 me-2">Stock:</span>
+                        <span class="col-7"><InputNumber @bind-Value="newProduct.Stock" class="form-control" /></span>
+                    </div>
+                    
+                </EditForm>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" @onclick="HideModal">Close</button>
+                <button type="submit" class="btn btn-primary">Create Product</button>
+            </div>
+        </div>
     </div>
-    <div>
-        <label>Price:</label>
-        <InputNumber @bind-Value="newProduct.Price" />
-    </div>
-    <div>
-        <label>Description:</label>
-        <InputText @bind-Value="newProduct.Description" />
-    </div>
-    <div>
-        <label>Stock:</label>
-        <InputNumber @bind-Value="newProduct.Stock" />
-    </div>
-    <button type="submit">Create Product</button>
-</EditForm>
+</div>
 
 @code {
+    [Parameter] public EventCallback OnProductCreated { get; set; }
+
+    private bool isVisible = false;
     private Product newProduct = new Product();
+
+    public void ShowModal()
+    {
+        isVisible = true;
+        StateHasChanged();
+    }
+
+    public void HideModal()
+    {
+        isVisible = false;
+        StateHasChanged();
+    }
 
     private async Task HandleValidSubmit()
     {
         var response = await Http.PostAsJsonAsync("api/product", newProduct);
         if (response.IsSuccessStatusCode)
         {
-            // Handle successful creation (e.g., show a success message or navigate)
+            await OnProductCreated.InvokeAsync();
+            newProduct = new Product();
+            HideModal();
         }
         else
         {
-            // Handle errors (e.g., show error message)
+            // Handle error
         }
     }
 }

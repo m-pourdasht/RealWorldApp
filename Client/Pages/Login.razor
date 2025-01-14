@@ -27,10 +27,10 @@
                 Your password must be 8-20 characters long, contain letters and numbers, and must not contain spaces, special characters, or emoji.
             </small>
         </div>
-
-        @* <button type="submit" class="btn btn-primary w-100" onclick="SeyHello()">Login</button> *@
-        <button type="submit" class="btn btn-primary w-100">Login</button>
-
+        <div class="d-flex justify-content-end">
+            <button type="button" class="btn btn-success me-2" @onclick="NavigateToRegister">Register</button>
+            <button type="submit" class="btn btn-primary">Login</button>
+        </div>
         @if (faildLogin != null)
         {
             <div class="alert alert-danger mt-3 position-fixed top-0 start-0" role="alert">
@@ -38,8 +38,8 @@
             </div>
         }
     </EditForm>
+</div>
 
-</div
 @code {
     private LoginModel loginModel = new LoginModel();
     private string? faildLogin { get; set; }
@@ -74,5 +74,10 @@
         {
             faildLogin = "Login failed. Please check your credentials.";
         }
+    }
+
+    private void NavigateToRegister()
+    {
+        _navigationManager.NavigateTo("/register");
     }
 }

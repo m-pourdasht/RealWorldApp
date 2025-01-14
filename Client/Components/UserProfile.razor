@@ -1,21 +1,24 @@
-﻿@if (isLoading)
-{
-    <div class="spinner-border" role="status">
-        <span class="visually-hidden">Loading...</span>
+﻿<div class="card">
+    <div class="card-body">
+        @if (isLoading)
+        {
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        }
+        else if (user != null)
+        {
+            <div>
+                <h3>@user.Name</h3>
+                <p>@user.Email</p>
+            </div>
+        }
+        else
+        {
+            <p>User not found.</p>
+        }
     </div>
-}
-else if (user != null)
-{
-    <div>
-        <h3>@user.Name</h3>
-        <p>@user.Email</p>
-    </div>
-}
-else
-{
-    <p>User not found.</p>
-}
-
+</div>
 @code {
     [Parameter] 
     public int UserId { get; set; }

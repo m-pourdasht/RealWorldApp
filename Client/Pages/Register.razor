@@ -4,30 +4,41 @@
 @using RealWorldApp.Shared.Models
 @inject NavigationManager _navigationManager
 
-<EditForm Model="registerModel" OnValidSubmit="RegisterUser">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
+<div class="mx-auto w-50">
+    <h3 class="card-title text-center mb-4">Registrar</h3>
+    <EditForm Model="registerModel" OnValidSubmit="RegisterUser">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
 
-    <div>
-        <label>Username:</label>
-        <InputText @bind-Value="registerModel.Username" />
+        <!-- Username field with floating label -->
+        <div class="form-floating mb-3">
+            <InputText id="username" @bind-Value="registerModel.Username" class="form-control" placeholder="Username" />
+            <label for="username">Username</label>
+        </div>
+
+        <!-- Password field with floating label -->
+        <div class="form-floating mb-3">
+            <InputText id="password" @bind-Value="registerModel.Password" type="password" class="form-control" placeholder="Password" />
+            <label for="password">Password</label>
+            <small id="passwordHelpBlock" class="form-text text-muted">
+                Your password must be 8-20 characters long, contain letters and numbers, and must not contain spaces, special characters, or emoji.
+            </small>
+        </div>
+        <div class="d-flex justify-content-end">
+            <button type="submit" class="btn btn-success" >Register</button>
+        </div>
+    </EditForm>
+    <div class="w-100 mt-5">
+    @if (successRegister != null)
+    {
+        <span class="alert alert-info">@successRegister</span>
+    }
+    else if (faildRegister != null)
+    {
+        <span class="alert alert-danger">@faildRegister</span>
+    }
     </div>
-    <div>
-        <label>Password:</label>
-        <InputText @bind-Value="registerModel.Password" type="password" />
-    </div>
-
-    <button type="submit">Register</button>
-</EditForm>
-
-@if (successRegister != null)
-{
-    <span class="alert alert-info">@successRegister</span>
-}
-else if (faildRegister != null)
-{
-    <span class="alert alert-danger">@faildRegister</span>
-}
+</div>
 
 @code {
     private RegisterModel registerModel = new RegisterModel();

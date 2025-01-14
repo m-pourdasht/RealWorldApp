@@ -9,13 +9,11 @@
 
 <PageTitle>Index</PageTitle>
     <Products />
-    <SurveyPrompt Title="How is Blazor working for you?" />
-    <hr />
     <CreateProduct />
-<UserProfile UserId="@SelectedUserId" />
+<UserProfile UserId="@SelectedUserId"></UserProfile>
+    <button class="btn btn-info" @onclick="() => ChangeUser(1)">Load User 1</button>
+    <button class="btn btn-info " @onclick="() => ChangeUser(2)">Load User 2</button>
 
-<button class="btn btn-info" @onclick="() => ChangeUser(1)">Load User 1</button>
-<button class="btn btn-info " @onclick="() => ChangeUser(2)">Load User 2</button>
 @code {
     private int SelectedUserId = 1;
 

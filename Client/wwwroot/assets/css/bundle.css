@@ -1,4 +1,151 @@
 @charset "UTF-8";
+.card {
+  --bs-card-box-shadow: var(--bs-root-card-box-shadow);
+  --bs-card-border-color: var(--bs-root-card-border-color);
+  border: 0;
+}
+.card .card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  flex-wrap: wrap;
+  min-height: 70px;
+  padding: 0 2.25rem;
+  color: var(--bs-card-cap-color);
+  background-color: var(--bs-card-cap-bg);
+  border-bottom: 1px solid var(--bs-card-border-color);
+}
+.card .card-header .card-title {
+  display: flex;
+  align-items: center;
+  margin: 0.5rem;
+  margin-left: 0;
+}
+.card .card-header .card-title.flex-column {
+  align-items: flex-start;
+  justify-content: center;
+}
+.card .card-header .card-title .card-icon {
+  margin-right: 0.75rem;
+  line-height: 0;
+}
+.card .card-header .card-title .card-icon i {
+  font-size: 1.25rem;
+  color: var(--bs-gray-600);
+  line-height: 0;
+}
+.card .card-header .card-title .card-icon i:after, .card .card-header .card-title .card-icon i:before {
+  line-height: 0;
+}
+.card .card-header .card-title .card-icon .svg-icon {
+  color: var(--bs-gray-600);
+}
+.card .card-header .card-title .card-icon .svg-icon svg {
+  height: 24px valueif(false, !important, );
+  width: 24px valueif(false, !important, );
+}
+.card .card-header .card-title,
+.card .card-header .card-title .card-label {
+  font-weight: 500;
+  font-size: 1.275rem;
+  color: var(--bs-text-gray-900);
+}
+.card .card-header .card-title .card-label {
+  margin: 0 0.75rem 0 0;
+  flex-wrap: wrap;
+}
+.card .card-header .card-title small, .card .card-header .card-title .small {
+  color: var(--bs-text-muted);
+  font-size: 1rem;
+}
+.card .card-header .card-title h1, .card .card-header .card-title .h1, .card .card-header .card-title h2, .card .card-header .card-title .h2, .card .card-header .card-title h3, .card .card-header .card-title .h3, .card .card-header .card-title h4, .card .card-header .card-title .h4, .card .card-header .card-title h5, .card .card-header .card-title .h5, .card .card-header .card-title h6, .card .card-header .card-title .h6 {
+  margin-bottom: 0;
+}
+.card .card-header .card-toolbar {
+  display: flex;
+  align-items: center;
+  margin: 0.5rem 0;
+  flex-wrap: wrap;
+}
+.card .card-body {
+  padding: 2rem 2.25rem;
+  color: var(--bs-card-color);
+}
+.card .card-footer {
+  padding: 2rem 2.25rem;
+  color: var(--bs-card-cap-color);
+  background-color: var(--bs-card-cap-bg);
+  border-top: 1px solid var(--bs-card-border-color);
+}
+.card .card-scroll {
+  position: relative;
+  overflow: auto;
+}
+.card.card-px-0 .card-header,
+.card.card-px-0 .card-body,
+.card.card-px-0 .card-footer {
+  padding-left: 0;
+  padding-right: 0;
+}
+.card.card-py-0 .card-header,
+.card.card-py-0 .card-body,
+.card.card-py-0 .card-footer {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.card.card-p-0 .card-header,
+.card.card-p-0 .card-body,
+.card.card-p-0 .card-footer {
+  padding: 0;
+}
+.card.card-dashed {
+  box-shadow: none;
+  border: 1px dashed var(--bs-border-dashed-color);
+}
+.card.card-dashed > .card-header {
+  border-bottom: 1px dashed var(--bs-border-dashed-color);
+}
+.card.card-dashed > .card-footer {
+  border-top: 1px dashed var(--bs-border-dashed-color);
+}
+.card.card-bordered {
+  box-shadow: none;
+  border: 1px solid #dee2e6;
+}
+.card.card-flush > .card-header {
+  border-bottom: 0 !important;
+}
+.card.card-flush > .card-footer {
+  border-top: 0 !important;
+}
+.card.card-shadow {
+  box-shadow: var(--bs-card-box-shadow);
+  border: 0;
+}
+.card.card-reset {
+  border: 0 !important;
+  box-shadow: none !important;
+  background-color: transparent !important;
+}
+.card.card-reset > .card-header {
+  border-bottom: 0 !important;
+}
+.card.card-reset > .card-footer {
+  border-top: 0 !important;
+}
+.card.card-borderless {
+  border: 0 !important;
+}
+.card.card-borderless > .card-header {
+  border-bottom: 0 !important;
+}
+.card.card-borderless > .card-footer {
+  border-top: 0 !important;
+}
+.card.card-border-0 {
+  border: 0 !important;
+}
+
 /*!
  * Bootstrap  v5.3.3 (https://getbootstrap.com/)
  * Copyright 2011-2024 The Bootstrap Authors
@@ -5044,16 +5191,16 @@ textarea.form-control-lg {
   --bs-card-spacer-y: 1rem;
   --bs-card-spacer-x: 1rem;
   --bs-card-title-spacer-y: 0.5rem;
-  --bs-card-title-color: ;
+  --bs-card-title-color: var(--bs-gray-900);
   --bs-card-subtitle-color: ;
-  --bs-card-border-width: var(--bs-border-width);
-  --bs-card-border-color: var(--bs-border-color-translucent);
-  --bs-card-border-radius: var(--bs-border-radius);
-  --bs-card-box-shadow: ;
-  --bs-card-inner-border-radius: calc(var(--bs-border-radius) - (var(--bs-border-width)));
+  --bs-card-border-width: 1px;
+  --bs-card-border-color: #dee2e6;
+  --bs-card-border-radius: 0.5rem;
+  --bs-card-box-shadow: 0px 0px 20px 0px rgba(76, 87, 125, 0.02);
+  --bs-card-inner-border-radius: calc(0.5rem - 1px);
   --bs-card-cap-padding-y: 0.5rem;
   --bs-card-cap-padding-x: 1rem;
-  --bs-card-cap-bg: rgba(var(--bs-body-color-rgb), 0.03);
+  --bs-card-cap-bg: transparent;
   --bs-card-cap-color: ;
   --bs-card-height: ;
   --bs-card-color: ;

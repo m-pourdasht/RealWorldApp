@@ -30,13 +30,13 @@
                         <span class="col-5 me-2">Stock:</span>
                         <span class="col-7"><InputNumber @bind-Value="newProduct.Stock" class="form-control" /></span>
                     </div>
-                    
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" @onclick="HideModal">Close</button>
+                        <button type="submit" class="btn btn-primary">Create Product</button>
+                    </div>
                 </EditForm>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" @onclick="HideModal">Close</button>
-                <button type="submit" class="btn btn-primary">Create Product</button>
-            </div>
+            
         </div>
     </div>
 </div>

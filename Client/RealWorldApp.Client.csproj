@@ -12,6 +12,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="Pages\UserProfile.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Shared\CustomLayout.razor.css" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Pages\UserProfile.razor" />
     <_ContentIncludedByDefault Remove="tsconfig.json" />
   </ItemGroup>
 
@@ -41,6 +50,18 @@
     <Folder Include="wwwroot\assets\css\" />
     <Folder Include="wwwroot\assets\js\" />
     <Folder Include="wwwroot\assets\media\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Pages\UserProfile.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Shared\CustomLayout.razor.css" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Components\UserProfile.razor" />
   </ItemGroup>
 
 </Project>

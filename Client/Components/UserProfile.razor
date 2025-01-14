@@ -1,0 +1,44 @@
+﻿@if (isLoading)
+{
+    <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+}
+else if (user != null)
+{
+    <div>
+        <h3>@user.Name</h3>
+        <p>@user.Email</p>
+    </div>
+}
+else
+{
+    <p>User not found.</p>
+}
+
+@code {
+    [Parameter] 
+    public int UserId { get; set; }
+    private User user;
+    private bool isLoading = true;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        isLoading = true; // Show the spinner
+        await Task.Delay(5000); // Simulate async API call
+        user = await UserService.GetUserByIdAsync(UserId);
+        isLoading = false; // Hide the spinner
+    }
+
+    public class User
+    {
+        public string Name { get; set; }
+        public string Email { get; set; }
+    }
+
+    private static class UserService
+    {
+        public static Task<User> GetUserByIdAsync(int id) =>
+            Task.FromResult(new User { Name = $"User {id}", Email = $"user{id}@example.com" });
+    }
+}

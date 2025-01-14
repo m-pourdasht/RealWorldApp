@@ -1,6 +1,27 @@
 ﻿@inherits LayoutComponentBase
-<div class="layout">
+@inject CustomAuthStateProvider _authStateProvider
+@inject NavigationManager _navigationManager
+
+<div class="page">
+    <div class="sidebar">
+        <NavMenu />
+    </div>
+
     <main>
-        @Body
+        <div class="top-row px-4">
+            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+            <a @onclick="Logout">Logout</a>
+        </div>
+
+        <article class="container">
+            @Body
+        </article>
     </main>
 </div>
+@code {
+    private async Task Logout()
+    {
+        await _authStateProvider.Logout(); // Call the logout method
+        _navigationManager.NavigateTo("/login"); // Redirect the user to the login page
+    }
+}

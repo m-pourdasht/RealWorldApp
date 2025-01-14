@@ -7,86 +7,94 @@
 @inject BlockUIService BlockUI
 
 @* using DataContainer id to say to Block() methode to block the table till loading all the data *@
-<div id="DataContainer" class="card h-100 p-5">
-    @if (products == null)
-    {
-        <div class="text-center">
-            <div class="spinner-border" role="status">
-                <span class="sr-only">Loading...</span>
-            </div>
+<div id="DataContainer" class="card">
+    <div class="card-header">
+        <div class="card-title"></div>
+        <div class="toolbar"> 
+            <button class="btn btn-info" @onclick="OnClickSortName">
+                <i class="fa-solid fa-sort bg-transparent"></i> Sort names
+            </button>
+            <button class="btn btn-info" @onclick="ShowCreateProductModal">
+                <i class="fa-solid fa-plus bg-transparent"></i> Create new product
+            </button>
         </div>
-    }
-    else
-    {
-        <table class="table">
-            <thead>
-                <tr>
-                    <div>
-                        <button class="btn btn-info" @onclick="OnClickSortName">
-                            <i class="fa-solid fa-sort bg-transparent"></i> Sort names
-                        </button>
-                        <button class="btn btn-info" @onclick="ShowCreateProductModal">
-                            <i class="fa-solid fa-plus bg-transparent"></i> Create new product
-                        </button>
-                    </div>
-                </tr>
-                <tr>
-                    <th>
-                        Name
-                        <i @onclick="OnClickSortStock" class="fa fa-solid @(sortByDescriptionAsc ? "fa-arrow-up" : "fa-arrow-down" )"></i>
-                    </th>
-                    <th>
-                        Price
-                        <i @onclick="OnClickSortStock" class="fa fa-solid @(sortByDescriptionAsc ? "fa-arrow-up" : "fa-arrow-down" )"></i>
-                    </th>
-                    <th>
-                        Description
-                        <i @onclick="OnClickSortStock" class="fa fa-solid @(sortByDescriptionAsc ? "fa-arrow-up" : "fa-arrow-down" )"></i>
-                    </th>
-                    <th>
-                        Stock
-                        <i @onclick="OnClickSortStock" class="fa fa-solid @(sortByDescriptionAsc ? "fa-arrow-up" : "fa-arrow-down" )"></i>
-                    </th>
-                    <th>
-                        Action
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var product in products)
-                {
-                    <tr>
-                        <td>@product.Name</td>
-                        <td>@product.Price</td>
-                        <td>@product.Description</td>
-                        <td>@product.Stock</td>
-                        <td><i @onclick="() => DeleteProduct(product.Id)" class="fa-solid fa-trash text-danger" ></i></td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    }
-</div>
-<div class="card p-5 my-3 my-lg-6">
-    @if (products != null)
-    {
-        var matchingProducts = products.Where(p => p.Name == "4K Ultra HD Smart TV");
-        if (matchingProducts.Any())
+    </div>
+
+    <div class="card-body">
+        @if (products == null)
         {
-            <ul>
-                @foreach (var matchingProduct in matchingProducts)
-                {
-                    <li>Product found: @matchingProduct.Name</li>
-                }
-            </ul>
+            <div class="text-center">
+                <div class="spinner-border" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
         }
-    }
-    else
-    {
-        <span>No product with ID 1 found</span>
-    }
+        else
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Name
+                            <i @onclick="OnClickSortStock" class="fa fa-solid @(sortByDescriptionAsc ? "fa-arrow-up" : "fa-arrow-down" )"></i>
+                        </th>
+                        <th>
+                            Price
+                            <i @onclick="OnClickSortStock" class="fa fa-solid @(sortByDescriptionAsc ? "fa-arrow-up" : "fa-arrow-down" )"></i>
+                        </th>
+                        <th>
+                            Description
+                            <i @onclick="OnClickSortStock" class="fa fa-solid @(sortByDescriptionAsc ? "fa-arrow-up" : "fa-arrow-down" )"></i>
+                        </th>
+                        <th>
+                            Stock
+                            <i @onclick="OnClickSortStock" class="fa fa-solid @(sortByDescriptionAsc ? "fa-arrow-up" : "fa-arrow-down" )"></i>
+                        </th>
+                        <th>
+                            Action
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var product in products)
+                    {
+                        <tr>
+                            <td>@product.Name</td>
+                            <td>@product.Price</td>
+                            <td>@product.Description</td>
+                            <td>@product.Stock</td>
+                            <td><i @onclick="() => DeleteProduct(product.Id)" class="fa-solid fa-trash text-danger" ></i></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        <div>
+            @if (products != null)
+            {
+                var matchingProducts = products.Where(p => p.Name == "4K Ultra HD Smart TV");
+                if (matchingProducts.Any())
+                {
+                    <ul>
+                        @foreach (var matchingProduct in matchingProducts)
+                        {
+                            <li>Product found: @matchingProduct.Name</li>
+                        }
+                    </ul>
+                }
+            }
+            else
+            {
+                <span>No product with ID 1 found</span>
+            }
+        </div>
+    </div>
 </div>
-<CreateProduct @ref="createProduct" OnProductCreated="RefreshProducts" />
+<div class="card">
+    <div class="card-body">
+            <CreateProduct @ref="createProduct" OnProductCreated="RefreshProducts" />
+    </div>
+</div>
 
 @code {
     private List<Product> products;

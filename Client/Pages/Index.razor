@@ -8,14 +8,21 @@
 @using RealWorldApp.Shared.Models
 
 <PageTitle>Index</PageTitle>
-<div class="container ">
     <Products />
     <SurveyPrompt Title="How is Blazor working for you?" />
     <hr />
     <CreateProduct />
-</div>
+<UserProfile UserId="@SelectedUserId" />
 
+<button class="btn btn-info" @onclick="() => ChangeUser(1)">Load User 1</button>
+<button class="btn btn-info " @onclick="() => ChangeUser(2)">Load User 2</button>
 @code {
+    private int SelectedUserId = 1;
+
+    private void ChangeUser(int userId)
+    {
+        SelectedUserId = userId;
+    }
     protected override async Task OnInitializedAsync()
     {
         var authState = await _authStateProvider.GetAuthenticationStateAsync();

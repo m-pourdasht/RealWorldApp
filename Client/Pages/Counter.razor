@@ -3,13 +3,17 @@
 @using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Authorization
 
-<PageTitle>Counter</PageTitle>
+<div class="card">
+    <div class="card-header">
+        <div class="card-title">Counter</div>
+        <div class="card-toolbar">sss</div>
+    </div>
+    <div class="card-body">
+        <p role="status">Current count: @currentCount</p>
 
-<h1>Counter</h1>
-
-<p role="status">Current count: @currentCount</p>
-
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+        <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+    </div>
+</div>
 
 @code {
     private int currentCount = 0;

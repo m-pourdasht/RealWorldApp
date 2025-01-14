@@ -1,0 +1,195 @@
+﻿//
+// Card
+//
+
+// Base
+.card {
+    --#{$prefix}card-box-shadow: var(--#{$prefix}root-card-box-shadow);
+    --#{$prefix}card-border-color: var(--#{$prefix}root-card-border-color);
+
+    @if ($card-border-enabled) {
+        border: $card-border-width $card-border-style var(--#{$prefix}card-border-color);
+    }
+    @else {
+        border: 0;
+    }
+    // Header
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: stretch;
+        flex-wrap: wrap;
+        min-height: $card-header-height;
+        padding: 0 $card-px;
+        color: var(--#{$prefix}card-cap-color);
+        background-color: var(--#{$prefix}card-cap-bg);
+        border-bottom: $card-border-width $card-border-style var(--#{$prefix}card-border-color);
+        // Title
+        .card-title {
+            display: flex;
+            align-items: center;
+            margin: $card-header-py;
+            margin-left: 0;
+
+            &.flex-column {
+                align-items: flex-start;
+                justify-content: center;
+            }
+
+            .card-icon {
+                margin-right: 0.75rem;
+                line-height: 0;
+
+                i {
+                    font-size: 1.25rem;
+                    color: var(--#{$prefix}gray-600);
+                    line-height: 0;
+
+                    &:after,
+                    &:before {
+                        line-height: 0;
+                    }
+                }
+
+                .svg-icon {
+                    color: var(--#{$prefix}gray-600);
+                    @include svg-icon-size(24px);
+                }
+            }
+
+            &,
+            .card-label {
+                font-weight: 500;
+                font-size: 1.275rem;
+                color: var(--#{$prefix}text-gray-900);
+            }
+
+            .card-label {
+                margin: 0 0.75rem 0 0;
+                flex-wrap: wrap;
+            }
+            // Description
+            small {
+                color: var(--#{$prefix}text-muted);
+                font-size: 1rem;
+            }
+            // Headings
+            h1, h2, h3, h4, h5, h6 {
+                margin-bottom: 0;
+            }
+        }
+        // Toolbar
+        .card-toolbar {
+            display: flex;
+            align-items: center;
+            margin: $card-header-py 0;
+            flex-wrap: wrap;
+        }
+    }
+    // Body
+    .card-body {
+        padding: $card-py $card-px;
+        color: var(--#{$prefix}card-color);
+    }
+    // Footer
+    .card-footer {
+        padding: $card-py $card-px;
+        color: var(--#{$prefix}card-cap-color);
+        background-color: var(--#{$prefix}card-cap-bg);
+        border-top: $card-border-width $card-border-style var(--#{$prefix}card-border-color);
+    }
+    // Scroll
+    .card-scroll {
+        position: relative;
+        overflow: auto;
+    }
+    // Reset padding x
+    &.card-px-0 {
+        .card-header,
+        .card-body,
+        .card-footer {
+            padding-left: 0;
+            padding-right: 0;
+        }
+    }
+
+    &.card-py-0 {
+        .card-header,
+        .card-body,
+        .card-footer {
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+    }
+
+    &.card-p-0 {
+        .card-header,
+        .card-body,
+        .card-footer {
+            padding: 0;
+        }
+    }
+    // Dashed style
+    &.card-dashed {
+        box-shadow: none;
+        border: $card-border-width dashed $card-border-dashed-color;
+
+        > .card-header {
+            border-bottom: 1px dashed $card-border-dashed-color;
+        }
+
+        > .card-footer {
+            border-top: 1px dashed $card-border-dashed-color;
+        }
+    }
+    // Bordered style
+    &.card-bordered {
+        box-shadow: none;
+        border: $card-border-width $card-border-style $card-border-color;
+    }
+    // Flush header and footer borders
+    &.card-flush {
+        > .card-header {
+            border-bottom: 0 !important;
+        }
+
+        > .card-footer {
+            border-top: 0 !important;
+        }
+    }
+    // Enable shadow
+    &.card-shadow {
+        box-shadow: var(--#{$prefix}card-box-shadow);
+        border: 0;
+    }
+    // Reset styles
+    &.card-reset {
+        border: 0 !important;
+        box-shadow: none !important;
+        background-color: transparent !important;
+
+        > .card-header {
+            border-bottom: 0 !important;
+        }
+
+        > .card-footer {
+            border-top: 0 !important;
+        }
+    }
+    // Reset borders
+    &.card-borderless {
+        border: 0 !important;
+
+        > .card-header {
+            border-bottom: 0 !important;
+        }
+
+        > .card-footer {
+            border-top: 0 !important;
+        }
+    }
+    // Reset borders
+    &.card-border-0 {
+        border: 0 !important;
+    }
+}

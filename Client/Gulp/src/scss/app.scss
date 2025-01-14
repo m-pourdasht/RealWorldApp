@@ -9,10 +9,11 @@
 @import "node_modules/bootstrap/scss/mixins";
 
 // 4. Include any optional Bootstrap components as you like
-
+@import "components/mixins/svg-icon";
 
 // 5. Add additional custom code here
 @import 'utilities';
+@import 'Card';
 @import "node_modules/bootstrap/scss/bootstrap";
 
 

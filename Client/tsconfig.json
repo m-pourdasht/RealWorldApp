@@ -1,14 +1,19 @@
 {
   "compilerOptions": {
-    "target": "ES5",
-    "module": "commonjs",
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true,
     "allowJs": true,
-    "checkJs": true
+    "checkJs": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "paths": {
+      "source-map-js": [ "node_modules/source-map-js" ]
+    },
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "target": "ES5",
+    "baseUrl": "./"
   },
   "exclude": [
     "node_modules",
@@ -16,7 +21,7 @@
     "Gulp/src/js/index.js",
     "bin/**/*",
     "obj/**/*",
-    "wwwroot/**/*", // Exclude files in the wwwroot folder from TypeScript compilation
-    "**/*.js" // Exclude all JavaScript files
+    "wwwroot/**/*",
+    "**/*.js"
   ]
 }

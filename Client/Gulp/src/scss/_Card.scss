@@ -1,7 +1,7 @@
 ﻿//
 // Card
 //
-
+@import 'variables';
 // Base
 .card {
     --#{$prefix}card-box-shadow: var(--#{$prefix}root-card-box-shadow);

@@ -10,10 +10,12 @@
 
 // 4. Include any optional Bootstrap components as you like
 @import "components/mixins/svg-icon";
+@import "components/mixins/border-radius";
+
 
 // 5. Add additional custom code here
 @import 'utilities';
-@import 'Card';
+@import 'card';
 @import "node_modules/bootstrap/scss/bootstrap";
 
 

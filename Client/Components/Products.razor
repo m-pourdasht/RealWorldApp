@@ -8,7 +8,7 @@
 
 @* using DataContainer id to say to Block() methode to block the table till loading all the data *@
 <div id="DataContainer" class="card">
-    <div class="card-header">
+    <div class="card-header py-3">
         <div class="card-title"></div>
         <div class="toolbar"> 
             <button class="btn btn-info" @onclick="OnClickSortName">
@@ -59,18 +59,18 @@
                     @foreach (var product in products)
                     {
                         <tr>
-                            <td>@product.Name</td>
-                            <td>@product.Price</td>
+                            <td><a href="@($"/products/{product.Id}")">@product.Name</a></td>
+                            <td>@product.Price <span>€</span></td>
                             <td>@product.Description</td>
                             <td>@product.Stock</td>
-                            <td><i @onclick="() => DeleteProduct(product.Id)" class="fa-solid fa-trash text-danger" ></i></td>
+                            <td><i @onclick="() => DeleteProduct(product.Id)" class="fa-solid fa-trash text-danger" style="cursor: pointer;"></i></td>
                         </tr>
                     }
                 </tbody>
             </table>
         }
         <div>
-            @if (products != null)
+            @if (products is not null)
             {
                 var matchingProducts = products.Where(p => p.Name == "4K Ultra HD Smart TV");
                 if (matchingProducts.Any())
@@ -90,15 +90,10 @@
         </div>
     </div>
 </div>
-@* <div class="card">
-    <div class="card-body">
-            <CreateProduct @ref="createProduct" OnProductCreated="RefreshProducts" />
-    </div>
-</div> *@
-
+<CreateProduct @ref="createProduct" OnProductCreated="RefreshProducts" />
 @code {
-    private List<Product> products;
-    private CreateProduct createProduct;
+    private List<Product>? products;
+    private CreateProduct? createProduct;
     private bool sortByNameAsc = true;
     private bool sortByPriceAsc = true;
     private bool sortByDescriptionAsc = true;
@@ -139,7 +134,10 @@
     }
     private void ShowCreateProductModal()
     {
-        createProduct.ShowModal();
+        if (createProduct is not null)
+        {
+            createProduct.ShowModal();
+        }
     }
 
     private async Task RefreshProducts()
@@ -154,53 +152,65 @@
 
     private void OnClickSortName()
     {
-        if (sortByNameAsc)
+        if (products is not null)
         {
-            products = products.OrderBy(p => p.Name).ToList();
+            if (sortByNameAsc)
+            {
+                products = products.OrderBy(p => p.Name).ToList();
+            }
+            else
+            {
+                products = products.OrderByDescending(p => p.Name).ToList();
+            }
+            sortByNameAsc = !sortByNameAsc;
         }
-        else
-        {
-            products = products.OrderByDescending(p => p.Name).ToList();
-        }
-        sortByNameAsc = !sortByNameAsc;
     }
 
     private void OnClickSortPrice()
     {
-        if (sortByPriceAsc)
+        if (products is not null)
         {
-            products = products.OrderBy(p => p.Price).ToList();
+            if (sortByPriceAsc)
+            {
+                products = products.OrderBy(p => p.Price).ToList();
+            }
+            else
+            {
+                products = products.OrderByDescending(p => p.Price).ToList();
+            }
+            sortByPriceAsc = !sortByPriceAsc;
         }
-        else
-        {
-            products = products.OrderByDescending(p => p.Price).ToList();
-        }
-        sortByPriceAsc = !sortByPriceAsc;
     }
 
     private void OnClickSortDescription()
     {
-        if (sortByDescriptionAsc)
+        if (products is not null)
         {
-            products = products.OrderBy(p => p.Description).ToList();
+            if (sortByDescriptionAsc)
+            {
+                products = products.OrderBy(p => p.Description).ToList();
+            }
+            else
+            {
+                products = products.OrderByDescending(p => p.Description).ToList();
+            }
+            sortByDescriptionAsc = !sortByDescriptionAsc;
         }
-        else
-        {
-            products = products.OrderByDescending(p => p.Description).ToList();
-        }
-        sortByDescriptionAsc = !sortByDescriptionAsc;
     }
 
     private void OnClickSortStock()
     {
-        if (sortByStockAsc)
+        if (products is not null)
         {
-            products = products.OrderBy(p => p.Stock).ToList();
+            if (sortByStockAsc)
+            {
+                products = products.OrderBy(p => p.Stock).ToList();
+            }
+            else
+            {
+                products = products.OrderByDescending(p => p.Stock).ToList();
+            }
+            sortByStockAsc = !sortByStockAsc;
         }
-        else
-        {
-            products = products.OrderByDescending(p => p.Stock).ToList();
-        }
-        sortByStockAsc = !sortByStockAsc;
     }
 }

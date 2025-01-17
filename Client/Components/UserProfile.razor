@@ -1,4 +1,4 @@
-﻿<div class="card">
+﻿<div class="card mt-4">
     <div class="card-body">
         @if (isLoading)
         {
@@ -17,9 +17,16 @@
         {
             <p>User not found.</p>
         }
+        <div class="d-flex justify-content-end">
+            @ChildContent
+        </div>
+        
     </div>
+    
 </div>
 @code {
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
     [Parameter] 
     public int UserId { get; set; }
     private User user;

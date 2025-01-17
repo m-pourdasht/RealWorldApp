@@ -1,0 +1,45 @@
+﻿@page "/products/{id:int}"
+@using RealWorldApp.Shared.Models
+@using RealWorldApp.Client.Services
+@inject HttpClient Http
+@inject ProductService ProductService
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
+
+@if (product == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <h1>@product.Name</h1>
+    <p>@product.Description</p>
+    <p>Price: $@product.Price</p>
+    <p>@product.Stock</p>
+
+    <button class="btn btn-primary" @onclick="NavigateToProducts">Back to Products</button>
+}
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private Product? product;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (ProductService != null) // Use ProductService if injected
+        {
+            product = await ProductService.GetProductAsync(Id);
+        }
+        else // Fallback to using HttpClient if ProductService not injected
+        {
+            product = await Http.GetFromJsonAsync<Product>($"api/products/{Id}");
+        }
+    }
+
+    private void NavigateToProducts()
+    {
+        NavigationManager.NavigateTo("/products");
+    }
+}

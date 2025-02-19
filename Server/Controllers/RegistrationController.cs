@@ -1,33 +1,33 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RealWorldApp.Shared.Models;
 using RealWorldApp.Server.Data;
-using Microsoft.EntityFrameworkCore; // Ensure this is present
+using Microsoft.EntityFrameworkCore;
 
 
 [Route("api/[controller]")]
 [ApiController]
-public class AuthController : ControllerBase
+public class RegistertionController : ControllerBase
 {
     private readonly ApplicationDbContext _context;
 
-    public AuthController(ApplicationDbContext context)
+    public RegistertionController(ApplicationDbContext context)
     {
         _context = context;
     }
 
     [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] RegisterModel model)
+    public async Task<IActionResult> Register([FromBody] Registeration register)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState); // Returns specific validation errors
 
-        if (await _context.Users.AnyAsync(u => u.Username == model.Username))
+        if (await _context.Users.AnyAsync(u => u.Username == register.Username))
             return BadRequest(new { message = "Username already exists." });
 
         var user = new User
         {
-            Username = model.Username,
-            PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Password)
+            Username = register.Username,
+            PasswordHash = BCrypt.Net.BCrypt.HashPassword(register.Password)
         };
 
         _context.Users.Add(user);

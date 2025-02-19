@@ -1,5 +1,5 @@
 ﻿@page "/login"
-@* @using RealWorldApp.Client.Shared *@
+@using RealWorldApp.Client.Shared
 @layout FlatLayout
 @using Microsoft.AspNetCore.Components.Authorization
 @using RealWorldApp.Shared.Models
@@ -11,19 +11,18 @@
 
 <div class="mx-auto">
     <h3 class="card-title text-center mb-4">Login</h3>
-    <EditForm Model="loginModel" OnValidSubmit="HandleLogin">
+    @* <EditForm Model="login" OnValidSubmit="HandleLogin">
         <DataAnnotationsValidator />
         <ValidationSummary />
 
         <!-- Username field with floating label -->
         <div class="form-floating mb-3">
-            <InputText id="username" @bind-Value="loginModel.Username" class="form-control" placeholder="Username" />
+            <InputText id="username" @bind-Value="login.Username" class="form-control" placeholder="Username" />
             <label for="username">Username</label>
         </div>
-
         <!-- Password field with floating label -->
         <div class="form-floating mb-3">
-            <InputText id="password" @bind-Value="loginModel.Password" type="password" class="form-control" placeholder="Password" />
+            <InputText id="password" @bind-Value="login.Password" type="password" class="form-control" placeholder="Password" />
             <label for="password">Password</label>
             <small id="passwordHelpBlock" class="form-text text-muted">
                 Your password must be 8-20 characters long, contain letters and numbers, and must not contain spaces, special characters, or emoji.
@@ -45,18 +44,18 @@
                 @faildLogin
             </div>
         }
-    </EditForm>
+    </EditForm> *@
 </div>
 
 @code {
-    private LoginModel loginModel = new LoginModel();
+    private Login login = new Login();
     private string? faildLogin { get; set; }
 
     private async Task HandleLogin()
     {
         faildLogin = null;
 
-        var response = await Http.PostAsJsonAsync("api/login", loginModel);
+        var response = await Http.PostAsJsonAsync("api/login", login);
 
         if (response.IsSuccessStatusCode)
         {

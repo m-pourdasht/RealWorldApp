@@ -92,7 +92,7 @@
 </div>
 <CreateProduct @ref="createProduct" OnProductCreated="RefreshProducts" />
 @code {
-    private List<Product>? products;
+    private List<ProductDto>? products;
     private CreateProduct? createProduct;
     private bool sortByNameAsc = true;
     private bool sortByPriceAsc = true;

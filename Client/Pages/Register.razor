@@ -17,6 +17,12 @@
             <label for="username">Username</label>
         </div>
 
+        <!-- Email field with floating label -->
+        <div class="form-floating mb-3">
+            <InputText id="email" @bind-Value="registerModel.Email" class="form-control" placeholder="Email" />
+            <label for="email">Email</label>
+        </div>
+
         <!-- Password field with floating label -->
         <div class="form-floating mb-3">
             <InputText id="password" @bind-Value="registerModel.Password" type="password" class="form-control" placeholder="Password" />
@@ -61,7 +67,8 @@
         }
         else
         {
-            faildRegister = "You are not allowed to register.";
+            var error = await response.Content.ReadAsStringAsync();
+            faildRegister = error; // Show the actual error from the server
         }
     }
 }

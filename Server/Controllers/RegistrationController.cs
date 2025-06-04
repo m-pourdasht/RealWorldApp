@@ -27,6 +27,7 @@ public class AuthController : ControllerBase
         var user = new User
         {
             Username = model.Username,
+            Email = model.Email,
             PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Password)
         };
 

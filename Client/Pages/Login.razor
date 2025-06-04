@@ -21,6 +21,12 @@
             <label for="username">Username</label>
         </div>
 
+        <!-- Email field with floating label -->
+        <div class="form-floating mb-3">
+            <InputText id="email" @bind-Value="loginModel.Email" class="form-control" placeholder="Email" />
+            <label for="email">Email</label>
+        </div>
+
         <!-- Password field with floating label -->
         <div class="form-floating mb-3">
             <InputText id="password" @bind-Value="loginModel.Password" type="password" class="form-control" placeholder="Password" />

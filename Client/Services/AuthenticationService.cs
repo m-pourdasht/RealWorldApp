@@ -14,7 +14,7 @@ namespace RealWorldApp.Client.Services
             _httpClient = httpClient;
         }
 
-        public async Task<string> Register(RegisterModel model)
+        public async Task<string> Register(Registeration model)
         {
             var response = await _httpClient.PostAsJsonAsync("api/auth/register", model);
             return response.IsSuccessStatusCode ? "Registration successful" : "Error: " + await response.Content.ReadAsStringAsync();

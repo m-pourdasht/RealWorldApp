@@ -11,7 +11,7 @@
 
 <div class="mx-auto">
     <h3 class="card-title text-center mb-4">Login</h3>
-    @* <EditForm Model="login" OnValidSubmit="HandleLogin">
+    <EditForm Model="login" OnValidSubmit="HandleLogin">
         <DataAnnotationsValidator />
         <ValidationSummary />
 
@@ -23,7 +23,7 @@
 
         <!-- Email field with floating label -->
         <div class="form-floating mb-3">
-            <InputText id="email" @bind-Value="loginModel.Email" class="form-control" placeholder="Email" />
+            <InputText id="email" @bind-Value="login.Email" class="form-control" placeholder="Email" />
             <label for="email">Email</label>
         </div>
 
@@ -51,11 +51,11 @@
                 @faildLogin
             </div>
         }
-    </EditForm> *@
+    </EditForm>
 </div>
 
 @code {
-    private Login login = new Login();
+    private LoginModel login = new LoginModel();
     private string? faildLogin { get; set; }
 
     private async Task HandleLogin()
@@ -66,7 +66,10 @@
 
         if (response.IsSuccessStatusCode)
         {
-            var token = await response.Content.ReadAsStringAsync();
+
+            var result = await response.Content.ReadFromJsonAsync<TokenResponse>();
+            var token = result?.Token;
+
 
             if (!string.IsNullOrEmpty(token) && token.Split('.').Length == 3)
             {
@@ -94,4 +97,11 @@
     {
         _navigationManager.NavigateTo("/register");
     }
+
+
+    public class TokenResponse
+    {
+        public string Token { get; set; }
+    }
+
 }

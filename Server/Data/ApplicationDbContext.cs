@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using RealWorldApp.Client.Pages;
+//using RealWorldApp.Client.Pages;
 using RealWorldApp.Shared.Models;
 
 namespace RealWorldApp.Server.Data // Adjust namespace as necessary
@@ -13,7 +13,7 @@ namespace RealWorldApp.Server.Data // Adjust namespace as necessary
 
         public DbSet<User> Users { get; set; }
         public DbSet<ProductDto> Products { get; set; }
-        public DbSet<Registeration> Register{ get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

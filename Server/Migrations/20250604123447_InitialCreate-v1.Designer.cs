@@ -11,13 +11,8 @@ using RealWorldApp.Server.Data;
 namespace RealWorldApp.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-<<<<<<<< HEAD:Server/Migrations/20250225113036_InitialCreate.Designer.cs
-    [Migration("20250225113036_InitialCreate")]
-    partial class InitialCreate
-========
-    [Migration("20250219141120_RegisterationModelChanges")]
-    partial class RegisterationModelChanges
->>>>>>>> 77ca4ab1ad347bc52d877cb42aaed2bd00d49f08:Server/Migrations/20250219141120_RegisterationModelChanges.Designer.cs
+    [Migration("20250604123447_InitialCreate-v1")]
+    partial class InitialCreatev1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -56,33 +51,6 @@ namespace RealWorldApp.Server.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("RealWorldApp.Shared.Models.Registeration", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Register");
-                });
-
             modelBuilder.Entity("RealWorldApp.Shared.Models.User", b =>
                 {
                     b.Property<int>("Id")
@@ -92,17 +60,9 @@ namespace RealWorldApp.Server.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Email")
-<<<<<<<< HEAD:Server/Migrations/20250225113036_InitialCreate.Designer.cs
-========
-                        .IsRequired()
->>>>>>>> 77ca4ab1ad347bc52d877cb42aaed2bd00d49f08:Server/Migrations/20250219141120_RegisterationModelChanges.Designer.cs
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Role")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Username")

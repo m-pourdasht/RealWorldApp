@@ -41,7 +41,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Shared\RealWorldApp.Shared.csproj" />
-	<ProjectReference Include="..\Shared\RealWorldApp.Server.csproj" />
   </ItemGroup>
 
   <ItemGroup>

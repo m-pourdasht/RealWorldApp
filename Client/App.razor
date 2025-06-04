@@ -8,13 +8,13 @@
         <Found Context="routeData">
             <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(CustomLayout)">
                 <NotAuthorized>
-                    @code {
+                   @code {
                         protected override void OnInitialized()
                         {
                             // Redirect to the login page when the user is not authorized
                             _navigationManager.NavigateTo("/login");
                         }
-                    }
+                    } 
                 </NotAuthorized>
             </AuthorizeRouteView>
         </Found>

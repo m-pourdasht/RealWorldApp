@@ -1,0 +1,13 @@
+﻿@page "/admin"
+@using Microsoft.AspNetCore.Components.Authorization
+@inject AuthenticationStateProvider AuthStateProvider
+@inject NavigationManager Navigation
+
+<AuthorizeView Roles="Admin">
+    <h3>Welcome, Admin!</h3>
+    <p>This is a protected page only for Admin users.</p>
+</AuthorizeView>
+
+<NotAuthorized>
+    <h3>Access Denied</h3>
+</NotAuthorized>

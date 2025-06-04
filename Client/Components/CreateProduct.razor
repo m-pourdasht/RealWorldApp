@@ -45,7 +45,7 @@
     [Parameter] public EventCallback OnProductCreated { get; set; }
 
     private bool isVisible = false;
-    private Product newProduct = new Product();
+    private ProductDto newProduct = new ProductDto();
 
     public void ShowModal()
     {
@@ -65,7 +65,7 @@
         if (response.IsSuccessStatusCode)
         {
             await OnProductCreated.InvokeAsync();
-            newProduct = new Product();
+            newProduct = new ProductDto();
             HideModal();
         }
         else

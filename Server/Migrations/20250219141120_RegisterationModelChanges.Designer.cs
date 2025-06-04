@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RealWorldApp.Server.Data;
 
@@ -10,9 +11,16 @@ using RealWorldApp.Server.Data;
 namespace RealWorldApp.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+<<<<<<<< HEAD:Server/Migrations/20250225113036_InitialCreate.Designer.cs
+    [Migration("20250225113036_InitialCreate")]
+    partial class InitialCreate
+========
+    [Migration("20250219141120_RegisterationModelChanges")]
+    partial class RegisterationModelChanges
+>>>>>>>> 77ca4ab1ad347bc52d877cb42aaed2bd00d49f08:Server/Migrations/20250219141120_RegisterationModelChanges.Designer.cs
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -84,6 +92,10 @@ namespace RealWorldApp.Server.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Email")
+<<<<<<<< HEAD:Server/Migrations/20250225113036_InitialCreate.Designer.cs
+========
+                        .IsRequired()
+>>>>>>>> 77ca4ab1ad347bc52d877cb42aaed2bd00d49f08:Server/Migrations/20250219141120_RegisterationModelChanges.Designer.cs
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PasswordHash")

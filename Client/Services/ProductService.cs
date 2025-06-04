@@ -15,25 +15,25 @@ namespace RealWorldApp.Client.Services
             _httpClient = httpClient;
         }
 
-        public async Task<List<Product>> GetProductsAsync()
+        public async Task<List<ProductDto>> GetProductsAsync()
         {
-            return await _httpClient.GetFromJsonAsync<List<Product>>("api/product");
+            return await _httpClient.GetFromJsonAsync<List<ProductDto>>("api/product");
         }
 
-        public async Task<Product> GetProductAsync(int id)
+        public async Task<ProductDto> GetProductAsync(int id)
         {
-            return await _httpClient.GetFromJsonAsync<Product>($"api/product/{id}");
+            return await _httpClient.GetFromJsonAsync<ProductDto>($"api/product/{id}");
         }
 
-        public async Task<Product> CreateProductAsync(Product product)
+        public async Task<ProductDto> CreateProductAsync(ProductDto product)
         {
             var response = await _httpClient.PostAsJsonAsync("api/product", product);
             response.EnsureSuccessStatusCode();
 
-            return await response.Content.ReadFromJsonAsync<Product>();
+            return await response.Content.ReadFromJsonAsync<ProductDto>();
         }
 
-        public async Task UpdateProductAsync(Product product)
+        public async Task UpdateProductAsync(ProductDto product)
         {
             var response = await _httpClient.PutAsJsonAsync($"api/product/{product.Id}", product);
             response.EnsureSuccessStatusCode();

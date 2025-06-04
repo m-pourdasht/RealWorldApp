@@ -1,62 +1,53 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using RealWorldApp.Server.Data;
 using RealWorldApp.Shared.Models;
-using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace RealWorldApp.Server.Controllers
 {
+    [Route("api/auth")]
     [ApiController]
-    [Route("api/[controller]")]
     public class LoginController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
-        private readonly IConfiguration _configuration;
-
-        public LoginController(ApplicationDbContext context, IConfiguration configuration)
+        [HttpPost("login")]
+        public IActionResult Login([FromBody] UserDto userDto)
         {
-            _context = context;
-            _configuration = configuration;
-        }
+            if (userDto == null)
+                return BadRequest("Invalid client request");
 
-        [HttpPost]
-        public async Task<IActionResult> Login([FromBody] LoginModel model)
-        {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == model.Username);
-            if (user == null || !BCrypt.Net.BCrypt.Verify(model.Password, user.PasswordHash))
-                return Unauthorized("Invalid credentials.");
-
-            // Generate JWT token
-            var token = GenerateJwtToken(user);
-
-            return Ok(new { Token = token });
-        }
-
-        private string GenerateJwtToken(User user)
-        {
-            var claims = new[]
+            // Assign roles manually (example: Admin for a specific email)
+            if (userDto.Email == "admin@example.com")
             {
-                new Claim(JwtRegisteredClaimNames.Sub, user.Username),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                userDto.Role = "Admin";
+            }
+            else
+            {
+                userDto.Role = "User";
+            }
+
+            var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("YourSuperSecretKey"));
+            var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
+
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, userDto.Username),
+                new Claim(ClaimTypes.Email, userDto.Email),
+                new Claim("Role", userDto.Role)
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var tokenOptions = new JwtSecurityToken(
+                issuer: null,
+                audience: null,
+                claims: claims,
+                expires: DateTime.UtcNow.AddHours(2),
+                signingCredentials: signinCredentials
+            );
 
-            var token = new JwtSecurityToken(
-                _configuration["Jwt:Issuer"],
-                _configuration["Jwt:Issuer"],
-                claims,
-                expires: DateTime.Now.AddMinutes(30),
-                signingCredentials: creds);
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            var token = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
+            return Ok(new { Token = token });
         }
     }
 }

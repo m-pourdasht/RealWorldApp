@@ -45,5 +45,11 @@ namespace RealWorldApp.Client.Services
             response.EnsureSuccessStatusCode();
         }
 
+        public async Task EditProductAsync(int id, Product updatedProduct)
+        {
+            var response = await _httpClient.PutAsJsonAsync($"api/product/{id}", updatedProduct);
+            response.EnsureSuccessStatusCode();
+        }
+
     }
 }

@@ -1,0 +1,22 @@
+﻿@using RealWorldApp.Client.Enums
+
+@if (!string.IsNullOrEmpty(Text))
+{
+    <span class="@GetBadgeClass()">@Text</span>
+}
+
+
+@code {
+    [Parameter]
+    public string? Text { get; set; }
+
+    [Parameter]
+    public BadgeColor Type { get; set; }
+
+
+    private string GetBadgeClass()
+    {
+        return Type.GetDisplayName(); // Uses the extension method
+    }
+}
+

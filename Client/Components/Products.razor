@@ -5,6 +5,7 @@
 @inject ProductService ProductService
 @inject IJSRuntime JSRuntime
 @inject BlockUIService BlockUI
+@using RealWorldApp.Client.Enums
 
 @* using DataContainer id to say to Block() methode to block the table till loading all the data *@
 <div id="DataContainer" class="card">
@@ -47,11 +48,17 @@
                             <i @onclick="OnClickSortStock" class="fa fa-solid @(sortByDescriptionAsc ? "fa-arrow-up" : "fa-arrow-down" )"></i>
                         </th>
                         <th>
+                            Status
+                        </th>
+                        <th>
                             Stock
                             <i @onclick="OnClickSortStock" class="fa fa-solid @(sortByDescriptionAsc ? "fa-arrow-up" : "fa-arrow-down" )"></i>
                         </th>
                         <th>
-                            Action
+                            Edit
+                        </th>
+                        <th>
+                            Delete
                         </th>
                     </tr>
                 </thead>
@@ -63,6 +70,21 @@
                             <td>@product.Price <span>€</span></td>
                             <td>@product.Description</td>
                             <td>@product.Stock</td>
+                            <td>
+                                @if (product.Stock >= 5)
+                                {
+                                    <Badge Text="In Stock" Type="BadgeColor.Success" />
+                                }
+                                else if (product.Stock >= 2 && product.Stock <= 4)
+                                {
+                                    <Badge Text="Limited Stock" Type="BadgeColor.Warning" />
+                                }
+                                else
+                                {
+                                    <Badge Text="Out of Stock" Type="BadgeColor.Danger" />
+                                }
+                            </td>
+                            <td><a @onclick="() => EditProduct(product.Id)" class="fa-solid fa-pen text-danger" style="cursor: pointer;"></a></td>
                             <td><i @onclick="() => DeleteProduct(product.Id)" class="fa-solid fa-trash text-danger" style="cursor: pointer;"></i></td>
                         </tr>
                     }
@@ -132,6 +154,46 @@
             }
         }
     }
+
+    private async Task EditProduct(int productId)
+    {
+        var productToEdit = products.FirstOrDefault(p => p.Id == productId);
+        if (productToEdit == null)
+            return;
+
+        // Show a modal or form to edit the product
+        var confirmed = await JSRuntime.InvokeAsync<bool>("confirm", $"Edit product: {productToEdit.Name}?");
+        if (confirmed)
+        {
+            await BlockUI.Block("DataContainer");
+
+            try
+            {
+                // Example: You could show a modal here to let the user edit the product
+                // For now, let's simulate an edit (e.g., change stock)
+                productToEdit.Stock += 1; // Simulate a change
+
+
+                var product = new Product
+                    {
+                        Id = productToEdit.Id,
+                        Name = productToEdit.Name,
+                        Price = productToEdit.Price,
+                        Description = productToEdit.Description,
+                        Stock = productToEdit.Stock
+                    };
+
+
+                await ProductService.EditProductAsync(productId, product); // Call edit service
+                products = await ProductService.GetProductsAsync(); // Refresh list
+            }
+            finally
+            {
+                await BlockUI.Release("DataContainer");
+            }
+        }
+    }
+
     private void ShowCreateProductModal()
     {
         if (createProduct is not null)

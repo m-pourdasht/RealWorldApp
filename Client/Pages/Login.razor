@@ -6,6 +6,7 @@
 @using Blazored.SessionStorage
 @inject HttpClient Http
 @inject Blazored.SessionStorage.ISessionStorageService _sessionStorage
+@inject Blazored.LocalStorage.ILocalStorageService _localStorage
 @inject AuthenticationStateProvider _authStateProvider
 @inject NavigationManager _navigationManager
 
@@ -74,6 +75,7 @@
             if (!string.IsNullOrEmpty(token) && token.Split('.').Length == 3)
             {
                 await _sessionStorage.SetItemAsync("authToken", token);
+                await _localStorage.SetItemAsync("authToken", token);
                 ((CustomAuthStateProvider)_authStateProvider).NotifyUserAuthentication(token);
                 _navigationManager.NavigateTo("/");
             }

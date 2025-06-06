@@ -18,6 +18,7 @@ namespace RealWorldApp.Client.Services
             if (!string.IsNullOrEmpty(token))
             {
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                Console.WriteLine(request.Headers.Authorization?.ToString());
             }
 
             return await base.SendAsync(request, cancellationToken);

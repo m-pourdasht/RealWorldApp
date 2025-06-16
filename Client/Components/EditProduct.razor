@@ -6,34 +6,34 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Create Product</h5>
+                <h5 class="modal-title">Edit Product</h5>
                 <a class="close " @onclick="HideModal" data-dismiss="modal" aria-label="Close" style="cursor: pointer;">
                     <span class="text-dark fs-4" aria-hidden="true">&times;</span>
                 </a>
             </div>
             <div class="modal-body">
-                <EditForm Model="newProduct" OnValidSubmit="HandleValidSubmit">
+                <EditForm Model="EditingProduct" OnValidSubmit="HandleValidSubmit">
                     <DataAnnotationsValidator />
                     <ValidationSummary />
                     <div class="input-group mb-3">
                         <span class="col-5 me-2">Product Name:</span>
-                        <span class="col-7"><InputText @bind-Value="newProduct.Name" class="form-control" /></span>
+                        <span class="col-7"><InputText @bind-Value="EditingProduct.Name" class="form-control" /></span>
                     </div>
                     <div class="input-group mb-3">
                         <span class="col-5 me-2">Product Price:</span>
-                        <span class="col-7"><InputNumber @bind-Value="newProduct.Price" class="form-control" /></span>
+                        <span class="col-7"><InputNumber @bind-Value="EditingProduct.Price" class="form-control" /></span>
                     </div>
                     <div class="input-group mb-3">
                         <span class="col-5 me-2">Product Description:</span>
-                        <span class="col-7"><InputText @bind-Value="newProduct.Description" class="form-control" /></span>
+                        <span class="col-7"><InputText @bind-Value="EditingProduct.Description" class="form-control" /></span>
                     </div>
                     <div class="input-group mb-3">
                         <span class="col-5 me-2">Stock:</span>
-                        <span class="col-7"><InputNumber @bind-Value="newProduct.Stock" class="form-control" /></span>
+                        <span class="col-7"><InputNumber @bind-Value="EditingProduct.Stock" class="form-control" /></span>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" @onclick="HideModal">Close</button>
-                        <button type="submit" class="btn btn-primary">Create Product</button>
+                        <button class="btn btn-primary" type="submit">Save</button>
                     </div>
                 </EditForm>
             </div>
@@ -42,10 +42,9 @@
 </div>
 
 @code {
-    [Parameter] public EventCallback OnProductCreated { get; set; }
-
+    public ProductDto EditingProduct { get; set; } = new();
     private bool isVisible = false;
-    private ProductDto newProduct = new ProductDto();
+    [Parameter] public EventCallback OnProductUpdated { get; set; }
 
     public void ShowModal()
     {
@@ -59,13 +58,26 @@
         StateHasChanged();
     }
 
+    public void Show(ProductDto product)
+    {
+        EditingProduct = new ProductDto
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Price = product.Price,
+                Description = product.Description,
+                Stock = product.Stock,
+            };
+        isVisible = true;
+        StateHasChanged();
+    }
+
     private async Task HandleValidSubmit()
     {
-        var response = await Http.PostAsJsonAsync("api/product", newProduct);
+        var response = await Http.PutAsJsonAsync($"api/product/{EditingProduct.Id}", EditingProduct);
         if (response.IsSuccessStatusCode)
         {
-            await OnProductCreated.InvokeAsync();
-            newProduct = new ProductDto();
+            await OnProductUpdated.InvokeAsync();
             HideModal();
         }
         else

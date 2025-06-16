@@ -7,6 +7,12 @@
 @inject BlockUIService BlockUI
 @using RealWorldApp.Client.Enums
 
+<style>
+    tbody tbody tr:last-child {
+        border-bottom: !important;
+    }
+</style>
+
 @* using DataContainer id to say to Block() methode to block the table till loading all the data *@
 <div id="DataContainer" class="card">
     <div class="card-header py-3">
@@ -63,14 +69,16 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var product in products)
+                    @for (int i = 0; i < products.Count; i++)
                     {
+                        var product = products[i];
+                        bool isLast = i == products.Count - 1;
                         <tr>
-                            <td><a href="@($"/products/{product.Id}")">@product.Name</a></td>
-                            <td>@product.Price <span>€</span></td>
-                            <td>@product.Description</td>
-                            <td>@product.Stock</td>
-                            <td>
+                            <td class="@(isLast ? "border-bottom-0" : "")"><a href="@($"/products/{product.Id}")">@product.Name</a></td>
+                            <td class="@(isLast ? "border-bottom-0" : "")">@product.Price <span>€</span></td>
+                            <td class="@(isLast ? "border-bottom-0" : "")">@product.Description</td>
+                            <td class="@(isLast ? "border-bottom-0" : "")">@product.Stock</td>
+                            <td class="@(isLast ? "border-bottom-0" : "")">
                                 @if (product.Stock >= 5)
                                 {
                                     <Badge Text="In Stock" Type="BadgeColor.Success" />
@@ -84,8 +92,8 @@
                                     <Badge Text="Out of Stock" Type="BadgeColor.Danger" />
                                 }
                             </td>
-                            <td><a @onclick="() => EditProduct(product.Id)" class="fa-solid fa-pen text-danger" style="cursor: pointer;"></a></td>
-                            <td><i @onclick="() => DeleteProduct(product.Id)" class="fa-solid fa-trash text-danger" style="cursor: pointer;"></i></td>
+                            <td class="@(isLast ? "border-bottom-0" : "")"><a @onclick="() => EditProduct(product.Id)" class="fa-solid fa-pen text-danger" style="cursor: pointer;"></a></td>
+                            <td class="@(isLast ? "border-bottom-0" : "")"><i @onclick="() => DeleteProduct(product.Id)" class="fa-solid fa-trash text-danger" style="cursor: pointer;"></i></td>
                         </tr>
                     }
                 </tbody>
@@ -113,9 +121,11 @@
     </div>
 </div>
 <CreateProduct @ref="createProduct" OnProductCreated="RefreshProducts" />
+<EditProduct @ref="editProduct" OnProductUpdated="RefreshProducts" />
 @code {
     private List<ProductDto>? products;
     private CreateProduct? createProduct;
+    private EditProduct? editProduct;
     private bool sortByNameAsc = true;
     private bool sortByPriceAsc = true;
     private bool sortByDescriptionAsc = true;
@@ -145,7 +155,7 @@
             await BlockUI.Block("DataContainer"); // Block the UI during delete action
             try
             {
-                await ProductService.DeleteProductAsync(productId); // Call service to delete
+                await ProductService.DeleteProductAsync(productId); // Call service to fetch product details
                 products = await ProductService.GetProductsAsync(); // Refresh the product list
             }
             finally
@@ -157,40 +167,13 @@
 
     private async Task EditProduct(int productId)
     {
-        var productToEdit = products.FirstOrDefault(p => p.Id == productId);
-        if (productToEdit == null)
-            return;
-
-        // Show a modal or form to edit the product
-        var confirmed = await JSRuntime.InvokeAsync<bool>("confirm", $"Edit product: {productToEdit.Name}?");
-        if (confirmed)
+        if (editProduct is not null)
         {
-            await BlockUI.Block("DataContainer");
-
-            try
+            var product = await ProductService.GetProductAsync(productId); // Call service to fetch product details
+        if (product != null)
             {
-                // Example: You could show a modal here to let the user edit the product
-                // For now, let's simulate an edit (e.g., change stock)
-                productToEdit.Stock += 1; // Simulate a change
-
-
-                var product = new Product
-                    {
-                        Id = productToEdit.Id,
-                        Name = productToEdit.Name,
-                        Price = productToEdit.Price,
-                        Description = productToEdit.Description,
-                        Stock = productToEdit.Stock
-                    };
-
-
-                await ProductService.EditProductAsync(productId, product); // Call edit service
-                products = await ProductService.GetProductsAsync(); // Refresh list
-            }
-            finally
-            {
-                await BlockUI.Release("DataContainer");
-            }
+                editProduct.Show(product);
+            }   
         }
     }
 
@@ -201,6 +184,14 @@
             createProduct.ShowModal();
         }
     }
+
+    // private void ShowEditProductModal()
+    // {
+    //     if (editProduct is not null)
+    //     {
+    //         editProduct.ShowModal();
+    //     }
+    // }
 
     private async Task RefreshProducts()
     {

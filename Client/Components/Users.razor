@@ -67,6 +67,7 @@
 
         try
         {
+            await Task.Delay(2000);
             users = await UserService.GetAllAsync();
         }
         finally

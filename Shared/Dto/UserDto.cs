@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using RealWorldApp.Shared.Dto;
+using System.ComponentModel.DataAnnotations;
 
 namespace RealWorldApp.Shared.Models
 {
@@ -16,6 +17,6 @@ namespace RealWorldApp.Shared.Models
         [EmailAddress(ErrorMessage = "Invalid email format.")]
         public string Email { get; set; }
 
-        public string Role { get; set; }
+        public RoleDto Role { get; set; }
     }
 }

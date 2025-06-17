@@ -13,6 +13,7 @@ namespace RealWorldApp.Server.Data // Adjust namespace as necessary
 
         public DbSet<User> Users { get; set; }
         public DbSet<ProductDto> Products { get; set; }
+        public DbSet<Role> Roles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

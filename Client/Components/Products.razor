@@ -2,16 +2,10 @@
 @using RealWorldApp.Client.Components
 @using RealWorldApp.Shared.Models
 @using RealWorldApp.Client.Services
-@inject ProductService ProductService
+@inject ApiService<ProductDto> ProductService
 @inject IJSRuntime JSRuntime
 @inject BlockUIService BlockUI
 @using RealWorldApp.Client.Enums
-
-<style>
-    tbody tbody tr:last-child {
-        border-bottom: !important;
-    }
-</style>
 
 @* using DataContainer id to say to Block() methode to block the table till loading all the data *@
 <div id="DataContainer" class="card">
@@ -138,7 +132,7 @@
         try
         {
             await Task.Delay(2000);
-            products = await ProductService.GetProductsAsync();
+            products = await ProductService.GetAllAsync();  //Check in the end
         }
         finally
         {
@@ -155,8 +149,8 @@
             await BlockUI.Block("DataContainer"); // Block the UI during delete action
             try
             {
-                await ProductService.DeleteProductAsync(productId); // Call service to fetch product details
-                products = await ProductService.GetProductsAsync(); // Refresh the product list
+                await ProductService.DeleteAsync(productId); // Call service to fetch product details
+                products = await ProductService.GetAllAsync(); // Refresh the product list
             }
             finally
             {
@@ -169,7 +163,7 @@
     {
         if (editProduct is not null)
         {
-            var product = await ProductService.GetProductAsync(productId); // Call service to fetch product details
+            var product = await ProductService.GetAsync(productId); // Call service to fetch product details
         if (product != null)
             {
                 editProduct.Show(product);
@@ -200,7 +194,7 @@
 
     private async Task LoadProducts()
     {
-        products = await ProductService.GetProductsAsync();
+        products = await ProductService.GetAllAsync();
     }
 
     private void OnClickSortName()

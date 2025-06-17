@@ -1,0 +1,83 @@
+﻿@using RealWorldApp.Client.Components
+@using RealWorldApp.Shared.Models
+@using RealWorldApp.Client.Services
+@inject ApiService<UserDto> UserService
+@inject BlockUIService BlockUI
+@implements IDisposable
+
+
+<div id="DataContainer" class="card">
+    <div class="card-header py-3">
+        <div class="card-title"></div>
+        <div class="toolbar"></div>
+    </div>
+
+    <div class="card-body">
+        @if (users == null)
+        {
+            <div class="text-center">
+                <div class="spinner-border" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+        }
+        else
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            User Name
+                        </th>
+                        <th>
+                            Email
+                        </th>
+                        <th>
+                            Role
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < users.Count; i++)
+                    {
+                        var user = users[i];
+                        bool isLast = i == users.Count - 1;
+                        <tr>
+                            <td class="@(isLast ? "border-bottom-0" : "")">@user.Username</td>
+                            <td class="@(isLast ? "border-bottom-0" : "")">@user.Email</td>
+                            <td class="@(isLast ? "border-bottom-0" : "")">@user.Role.Name</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        <div>
+        </div>
+    </div>
+</div>
+
+
+@code {
+    private List<UserDto>? users;
+    private bool _isDisposed;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await BlockUI.Block("DataContainer");
+
+        try
+        {
+            users = await UserService.GetAllAsync();
+        }
+        finally
+        {
+            await BlockUI.Release("DataContainer");
+        }
+    }
+
+    public void Dispose()
+    {
+        _isDisposed = true;
+    }
+}
+

@@ -1,12 +1,8 @@
-
-using Microsoft.AspNetCore.ResponseCompression;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using RealWorldApp.Server.Data;
 using System.Text;
-using RealWorldApp.Client.Services;
-//using RealWorldApp.Client.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,14 +33,23 @@ builder.Services.AddAuthentication(options =>
 });
 builder.Services.AddHttpClient(); // Add HttpClient support in the server
 
-// Register your services here
-builder.Services.AddScoped<ProductService>(); // Register the ProductService
+
+
+// Register generic ApiService for server-side use (if needed)
+//builder.Services.AddScoped(typeof(ApiService<>));
 
 // Add Controllers and Razor Pages
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
-var app = builder.Build();
+var app = builder.Build(); // First instance of 'app'
+
+// Create a scope and get the ApplicationDbContext
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    DataSeeder.SeedRoles(context);
+}
 
 // Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())

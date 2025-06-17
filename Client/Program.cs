@@ -5,6 +5,7 @@ using RealWorldApp.Client;
 using RealWorldApp.Client.Services;
 using System.Net.Http.Headers;
 using Blazored.SessionStorage;
+using RealWorldApp.Shared.Models;
 
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
@@ -28,8 +29,20 @@ builder.Services.AddHttpClient("AuthorizedClient", client =>
 })
 .AddHttpMessageHandler<JwtAuthorizationMessageHandler>();
 
-// Register the ProductService with the AuthorizedClient
-builder.Services.AddScoped<ProductService>(sp =>
-    new ProductService(sp.GetRequiredService<IHttpClientFactory>().CreateClient("AuthorizedClient")));
+// Register ApiService for ProductDto
+builder.Services.AddScoped<ApiService<ProductDto>>(sp =>
+    new ApiService<ProductDto>(
+        sp.GetRequiredService<IHttpClientFactory>().CreateClient("AuthorizedClient"),
+        "api/product"
+    )
+);
+
+// Register ApiService for UserDto
+builder.Services.AddScoped<ApiService<UserDto>>(sp =>
+    new ApiService<UserDto>(
+        sp.GetRequiredService<IHttpClientFactory>().CreateClient("AuthorizedClient"),
+        "api/users" // <-- Use plural to match UsersController
+    )
+);
 
 await builder.Build().RunAsync();

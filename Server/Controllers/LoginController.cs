@@ -5,6 +5,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Collections.Generic;
+using static RealWorldApp.Client.Components.UserProfile;
+using RealWorldApp.Shared.Dto;
 
 namespace RealWorldApp.Server.Controllers
 {
@@ -21,11 +23,11 @@ namespace RealWorldApp.Server.Controllers
             // Assign roles manually (example: Admin for a specific email)
             if (userDto.Email == "admin@example.com")
             {
-                userDto.Role = "Admin";
+                userDto.Role = new RoleDto { Name = "Admin" };
             }
             else
             {
-                userDto.Role = "User";
+                userDto.Role = new RoleDto { Name = "User" };
             }
 
             var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("YourSuperSecretKey"));
@@ -35,7 +37,7 @@ namespace RealWorldApp.Server.Controllers
             {
                 new Claim(ClaimTypes.Name, userDto.Username),
                 new Claim(ClaimTypes.Email, userDto.Email),
-                new Claim("Role", userDto.Role)
+                new Claim(ClaimTypes.Role, userDto.Role.Name)
             };
 
             var tokenOptions = new JwtSecurityToken(

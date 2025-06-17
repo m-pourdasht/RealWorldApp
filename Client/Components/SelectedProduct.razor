@@ -2,7 +2,7 @@
 @using RealWorldApp.Shared.Models
 @using RealWorldApp.Client.Services
 @inject HttpClient Http
-@inject ProductService ProductService
+@inject ApiService<ProductDto> ProductService
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JSRuntime
 
@@ -30,7 +30,7 @@ else
     {
         if (ProductService != null) // Use ProductService if injected
         {
-            product = await ProductService.GetProductAsync(Id);
+            product = await ProductService.GetAsync(Id);
         }
         else // Fallback to using HttpClient if ProductService not injected
         {

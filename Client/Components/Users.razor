@@ -16,7 +16,7 @@
                 </button>
                 <ul class="dropdown-menu">
                     <li>
-                        <a class="dropdown-item" href="#" @onclick="@(() => SelectRole(null, "All Roles"))">All Roles</a>
+                        <a class="dropdown-item" href="#" @onclick='() => SelectRole(null, "All Roles")'>All Roles</a>
                     </li>
                     @foreach (var role in roles)
                     {
@@ -103,8 +103,8 @@
         try
         {
             await Task.Delay(2000);
-            var allUsers = await UserService.GetAllAsync();
-            users = allUsers
+            var allUsersResult = await UserService.GetAllAsync();
+            users = allUsersResult.Data?
                 .Where(u => u.Role != null)
                 .OrderBy(u => u.Username)
                 .ToList();

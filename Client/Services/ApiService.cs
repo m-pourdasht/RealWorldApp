@@ -1,4 +1,6 @@
 ﻿using System.Net.Http.Json;
+using RealWorldApp.Shared.Models;
+
 
 public class ApiService<T>
 {
@@ -11,8 +13,31 @@ public class ApiService<T>
         _endpoint = endpoint;
     }
 
-    public async Task<List<T>> GetAllAsync()
-        => await _httpClient.GetFromJsonAsync<List<T>>(_endpoint);
+    public async Task<ApiResult<List<T>>> GetAllAsync()
+    {
+        try
+        {
+            var response = await _httpClient.GetAsync(_endpoint);
+            var data = await response.Content.ReadFromJsonAsync<List<T>>();
+            return new ApiResult<List<T>>
+            {
+                Success = response.IsSuccessStatusCode,
+                Data = data,
+                StatusCode = (int)response.StatusCode,
+                ErrorMessage = response.IsSuccessStatusCode ? null : response.ReasonPhrase
+            };
+        }
+        catch (Exception ex)
+        {
+            return new ApiResult<List<T>>
+            {
+                Success = false,
+                Data = null,
+                StatusCode = 0,
+                ErrorMessage = ex.Message
+            };
+        }
+    }
 
     public async Task<T?> GetAsync(int id)
         => await _httpClient.GetFromJsonAsync<T>($"{_endpoint}/{id}");

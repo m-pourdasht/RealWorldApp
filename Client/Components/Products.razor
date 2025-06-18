@@ -133,7 +133,11 @@
         try
         {
             await Task.Delay(2000);
-            products = await ProductService.GetAllAsync();  //Check in the end
+            var result = await ProductService.GetAllAsync();  //Check in the end
+            if (result != null)
+            {
+                products = result.Data; 
+            }
         }
         finally
         {
@@ -151,7 +155,11 @@
             try
             {
                 await ProductService.DeleteAsync(productId); // Call service to fetch product details
-                products = await ProductService.GetAllAsync(); // Refresh the product list
+                var products = await ProductService.GetAllAsync(); // Refresh the product list
+                if (products != null)
+                {
+                    this.products = products.Data; // Update the products list
+                }
             }
             finally
             {
@@ -187,7 +195,12 @@
 
     private async Task LoadProducts()
     {
-        products = await ProductService.GetAllAsync();
+        var result = await ProductService.GetAllAsync();
+
+        if (result.Success)
+        {
+            products = result.Data;
+        }
     }
 
     private void OnClickSortName()

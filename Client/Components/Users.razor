@@ -1,15 +1,34 @@
 ﻿@using RealWorldApp.Client.Components
+@using RealWorldApp.Shared.Dto
 @using RealWorldApp.Shared.Models
 @using RealWorldApp.Client.Services
 @inject ApiService<UserDto> UserService
 @inject BlockUIService BlockUI
 @implements IDisposable
 
-
 <div id="DataContainer" class="card">
     <div class="card-header py-3">
         <div class="card-title"></div>
-        <div class="toolbar"></div>
+        <div class="toolbar">
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    @selectedRoleName
+                </button>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a class="dropdown-item" href="#" @onclick="@(() => SelectRole(null, "All Roles"))">All Roles</a>
+                    </li>
+                    @foreach (var role in roles)
+                    {
+                        <li>
+                            <a class="dropdown-item" href="#" @onclick="() => SelectRole(role.Id, role.Name)">
+                                @role.Name
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
     </div>
 
     <div class="card-body">
@@ -38,12 +57,11 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @for (int i = 0; i < users.Count; i++)
+                    @foreach (var user in FilteredUsers)
                     {
-                        var user = users[i];
-                        bool isLast = i == users.Count - 1;
+                        bool isLast = user == FilteredUsers.Last();
                         <tr>
-                            <td class="@(isLast ? "border-bottom-0" : "")">@user.Username</td>
+                            <td class="@(isLast ? "border-bottom-0" : "")">@($"{user.Username} { FilteredUsers.Count}") </td>
                             <td class="@(isLast ? "border-bottom-0" : "")">@user.Email</td>
                             <td class="@(isLast ? "border-bottom-0" : "")">@user.Role.Name</td>
                         </tr>
@@ -56,10 +74,27 @@
     </div>
 </div>
 
-
 @code {
+
     private List<UserDto>? users;
+    private List<RoleDto> roles = new();
+    private int? selectedRoleId;
+    private string selectedRoleName = "All Roles";
     private bool _isDisposed;
+
+
+
+    private void SelectRole(int? roleId, string roleName)
+    {
+        selectedRoleId = roleId;
+        selectedRoleName = roleName;
+    }
+
+    private List<UserDto> FilteredUsers => 
+                                        users == null ? Enumerable.Empty<UserDto>().ToList()
+                                        : selectedRoleId.HasValue ? 
+                                        users.Where(u => u.Role != null && u.Role.Id == selectedRoleId.Value).ToList()
+                                        : users.ToList();
 
     protected override async Task OnInitializedAsync()
     {
@@ -68,7 +103,20 @@
         try
         {
             await Task.Delay(2000);
-            users = await UserService.GetAllAsync();
+            var allUsers = await UserService.GetAllAsync();
+            users = allUsers
+                .Where(u => u.Role != null)
+                .OrderBy(u => u.Username)
+                .ToList();
+
+            // Populate roles from users (or fetch from API if available)
+            roles = users
+                .Where(u => u.Role != null)
+                .Select(u => u.Role)
+                .GroupBy(r => r.Id)
+                .Select(g => g.First())
+                .OrderBy(r => r.Name)
+                .ToList();
         }
         finally
         {
@@ -81,4 +129,3 @@
         _isDisposed = true;
     }
 }
-

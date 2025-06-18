@@ -124,6 +124,7 @@
     private bool sortByPriceAsc = true;
     private bool sortByDescriptionAsc = true;
     private bool sortByStockAsc = true;
+    private bool _isDisposed;
 
     protected override async Task OnInitializedAsync()
     {
@@ -178,14 +179,6 @@
             createProduct.ShowModal();
         }
     }
-
-    // private void ShowEditProductModal()
-    // {
-    //     if (editProduct is not null)
-    //     {
-    //         editProduct.ShowModal();
-    //     }
-    // }
 
     private async Task RefreshProducts()
     {
@@ -259,5 +252,9 @@
             }
             sortByStockAsc = !sortByStockAsc;
         }
+    }
+    public void Dispose()
+    {
+        _isDisposed = true;
     }
 }

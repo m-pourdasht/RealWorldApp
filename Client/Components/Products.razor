@@ -170,13 +170,10 @@
 
     private async Task EditProduct(int productId)
     {
-        if (editProduct is not null)
+        var result = await ProductService.GetAsync(productId);  //Check in the end
+        if (result != null && result.Success && result.Data != null && editProduct is not null)
         {
-            var product = await ProductService.GetAsync(productId); // Call service to fetch product details
-        if (product != null)
-            {
-                editProduct.Show(product);
-            }   
+            editProduct.Show(result.Data);
         }
     }
 

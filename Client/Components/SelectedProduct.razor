@@ -30,7 +30,16 @@ else
     {
         if (ProductService != null) // Use ProductService if injected
         {
-            product = await ProductService.GetAsync(Id);
+            var result = await ProductService.GetAsync(Id);
+            if (result != null && result.Success)
+            {
+                product = result.Data;
+            }
+            else
+            {
+                product = null;
+                // Optionally handle error: show message, log, etc.
+            }
         }
         else // Fallback to using HttpClient if ProductService not injected
         {

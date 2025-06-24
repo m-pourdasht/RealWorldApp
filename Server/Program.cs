@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using RealWorldApp.Server.Data;
@@ -45,10 +45,17 @@ builder.Services.AddRazorPages();
 var app = builder.Build(); // First instance of 'app'
 
 // Create a scope and get the ApplicationDbContext
+//using (var scope = app.Services.CreateScope())
+//{
+//    var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+//    DataSeeder.SeedRoles(context);
+//}
+
 using (var scope = app.Services.CreateScope())
 {
-    var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    DataSeeder.SeedRoles(context);
+    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    db.Database.Migrate(); // اطمینان از به‌روز بودن دیتابیس
+    DataSeeder.SeedRoles(db); // این خط بسیار مهمه
 }
 
 // Configure the HTTP request pipeline

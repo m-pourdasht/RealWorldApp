@@ -7,7 +7,7 @@
         public string? Email { get; set; }
         public string? PasswordHash { get; set; }
         // FK to Role
-        public int RoleId { get; set; }
+        public int? RoleId { get; set; }
         public Role? Role { get; set; }
 
     }

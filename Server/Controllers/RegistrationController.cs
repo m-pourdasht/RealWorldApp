@@ -27,12 +27,24 @@ public class RegistrationController : ControllerBase // Fixed class name
         {
             Username = register.Username, // Use 'register' not 'model'
             Email = register.Email,
-            PasswordHash = BCrypt.Net.BCrypt.HashPassword(register.Password)
+            PasswordHash = BCrypt.Net.BCrypt.HashPassword(register.Password),
+            RoleId = 2 // نقش پیش‌فرض برای ثبت‌نام
         };
 
-        _context.Users.Add(user);
-        await _context.SaveChangesAsync();
-
-        return Ok(new { message = "User registered successfully." });
+        try
+        {
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+            return Ok("ثبت‌نام موفق بود");
+        }
+        catch (DbUpdateException ex)
+        {
+            return BadRequest($"خطا در ثبت‌نام: {ex.InnerException?.Message}");
+        }
+        catch (Exception ex)
+        {
+            return BadRequest($"خطای غیرمنتظره: {ex.Message}");
+        }
+        //return Ok(new { message = "User registered successfully." });
     }
 }

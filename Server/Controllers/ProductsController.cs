@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Mapster;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RealWorldApp.Server.Data;
 using RealWorldApp.Shared.Models;
@@ -16,43 +17,59 @@ namespace RealWorldApp.Server.Controllers
             _context = context;
         }
 
+        // GET: api/Product
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductDto>>> GetProducts()
         {
-            return await _context.Products.ToListAsync();
+            var products = await _context.Products.ToListAsync();
+
+            // تبدیل به DTO
+            var result = products.Adapt<List<ProductDto>>();
+
+            return Ok(result);
         }
 
+        // GET: api/Product/5
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductDto>> GetProduct(int id)
         {
             var product = await _context.Products.FindAsync(id);
 
             if (product == null)
-            {
                 return NotFound();
-            }
 
-            return product;
+            var result = product.Adapt<ProductDto>();
+            return Ok(result);
         }
 
+        // POST: api/Product
         [HttpPost]
-        public async Task<ActionResult<ProductDto>> CreateProduct(ProductDto product)
+        public async Task<ActionResult<ProductDto>> CreateProduct(ProductDto productDto)
         {
+            // تبدیل DTO به Entity
+            var product = productDto.Adapt<ProductDto>();
+
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetProduct), new { id = product.Id }, product);
+            var resultDto = product.Adapt<ProductDto>();
+
+            return CreatedAtAction(nameof(GetProduct), new { id = product.Id }, resultDto);
         }
 
+        // PUT: api/Product/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateProduct(int id, ProductDto product)
+        public async Task<IActionResult> UpdateProduct(int id, ProductDto productDto)
         {
-            if (id != product.Id)
-            {
+            if (id != productDto.Id)
                 return BadRequest();
-            }
 
-            _context.Entry(product).State = EntityState.Modified;
+            var product = await _context.Products.FindAsync(id);
+            if (product == null)
+                return NotFound();
+
+            // به‌روزرسانی مقادیر
+            productDto.Adapt(product);
 
             try
             {
@@ -61,26 +78,21 @@ namespace RealWorldApp.Server.Controllers
             catch (DbUpdateConcurrencyException)
             {
                 if (!ProductExists(id))
-                {
                     return NotFound();
-                }
                 else
-                {
                     throw;
-                }
             }
 
             return NoContent();
         }
 
+        // DELETE: api/Product/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProduct(int id)
         {
             var product = await _context.Products.FindAsync(id);
             if (product == null)
-            {
                 return NotFound();
-            }
 
             _context.Products.Remove(product);
             await _context.SaveChangesAsync();

@@ -3,9 +3,6 @@ using RealWorldApp.Server.Data;
 using RealWorldApp.Shared.Models;
 using RealWorldApp.Shared.Dto;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Linq; // Add this using directive
 
 namespace RealWorldApp.Server.Controllers
 {
